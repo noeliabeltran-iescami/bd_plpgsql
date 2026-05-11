@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Exercicis de repàs - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Exercicis de rep\u00e0s";
+        var mkdocs_page_input_path = "exercicis_repas.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Exercicis de repàs</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#triggers">Triggers</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">Exercicis de repàs</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="exercicis-de-repas">Exercicis de repàs</h1>
+<h2 id="cursors"><strong class="azul">Cursors</strong></h2>
+<p><strong>Ejercicio C1:</strong> Crea una función que tome el nombre de una comarca como parámetro y muestre una lista de poblaciones en esa comarca junto con sus habitantes.</p>
+<pre><code>  select lista_poblaciones_por_comarca('Racó');
+
+
+  Población: Ademuz -- habitantes:1179
+  Población: Casas Altas -- habitantes:149
+  Población: Casas Bajas -- habitantes:195
+  Población: Castielfabib -- habitantes:282
+  Población: Vallanca -- habitantes:156
+  Población: Torrebaja -- habitantes:429
+  Población: Puebla de San Miguel -- habitantes:71
+</code></pre>
+<p><strong>Ejercicio C2:</strong> Crea una función que muestre el nombre de la comarca y el promedio de altura de todas las poblaciones de la misma comarca, ordenado por comarca. Al final devuelve el número total de comarcas.</p>
+<pre><code>  Comarca: Alt Vinalopó -- Promedio altura: 580.1428571428571429
+  Comarca: Baix Maestrat -- Promedio altura: 316.4444444444444444
+  Comarca: Baix Segura -- Promedio altura: 25.8518518518518519
+  Comarca: Baix Vinalopó -- Promedio altura: 74.0000000000000000
+  Comarca: Camp de Morvedre -- Promedio altura: 95.3125000000000000
+  Comarca: Camp de Túria -- Promedio altura: 198.4000000000000000
+  Comarca: Canal de Navarrés -- Promedio altura: 261.5000000000000000
+  Comarca: Comtat -- Promedio altura: 552.4583333333333333
+  Comarca: Costera -- Promedio altura: 170.6842105263157895
+  Comarca: Foia de Bunyol -- Promedio altura: 361.8888888888888889
+  Comarca: Horta Nord -- Promedio altura: 22.0476190476190476
+  ..............................
+  total comarcas:34
+</code></pre>
+<p><strong>Ejercicio C3:</strong> Crea una función que muestre el nombre de la población y la cantidad de institutos asociados, incluso los que tienen 0 institutos, ordenado por institutos.</p>
+<pre><code>  ............................
+  Población: Xàtiva -- Institutos: 3
+  Población: Xella -- Institutos: 0
+  Población: Xeraco -- Institutos: 1
+  Población: Xeresa -- Institutos: 0
+  Población: Xert -- Institutos: 0
+  Población: Xilxes -- Institutos: 0
+  Población: Xirivella -- Institutos: 2
+  Población: Xixona -- Institutos: 1
+  Población: Xodos -- Institutos: 0
+  Población: Yátova -- Institutos: 0
+  Población: Yesa, la -- Institutos: 0
+  Población: Zarra -- Institutos: 0
+  Población: Zucaina -- Institutos: 0
+</code></pre>
+<p><strong>Ejercicio C4:</strong>  Crea una función que tome el nombre de una comarca como parámetro y muestre la población y la altura de la población con la altura más alta.</p>
+<pre><code>  select altura_maxima_por_comarca('Alacantí');
+
+  Población: Torre de les Maçanes, la --  altura máxima: 788
+</code></pre>
+<p><strong>Ejercicio C5:</strong> Crea una función que muestre el nombre y la altura de las poblaciones que tienen alturas superiores al promedio.</p>
+<pre><code>  Población: Ademuz --  altura: 660
+  Población: Agost --  altura: 376
+  Población: Agres --  altura: 722
+  Población: Agullent --  altura: 360
+  Población: Aigües --  altura: 341
+  Población: Aín --  altura: 498
+  Población: Albaida --  altura: 315
+  Población: Albocàsser --  altura: 538
+  Población: Alborache --  altura: 320
+</code></pre>
+<p><strong>Ejercicio C6:</strong> Crea una función que tome dos nombres de provincias como parámetros y devuelva la diferencia absoluta de población entre ambas provincias.</p>
+<pre><code>  select diferencia_poblacion_entre_provincias('València', 'Alacant');
+
+  RETURN: 680.460
+</code></pre>
+<p><strong>Ejercicio C7:</strong> Crea una función que muestre el nombre de las poblaciones que no tienen institutos asociados en la tabla instituts, ordenado por población.</p>
+<pre><code>  Población: Ador
+  Población: Agres
+  Población: Agullent
+  Población: Aielo de Rugat
+  Población: Aigües
+  Población: Aín
+  Población: Albalat dels Sorells
+  Población: Albalat dels Tarongers
+  Población: Albocàsser
+  Población: Alborache
+  Población: Albuixech
+  Población: Alcalalí
+</code></pre>
+<p><strong>Ejercicio C8:</strong> Crea una función que muestre el nombre de las poblaciones que tienen una población por debajo del promedio.</p>
+<pre><code>  Promedio= 9234.0295
+
+  Población: Ademuz habitantes: 1179
+  Población: Ador habitantes: 1411
+  Población: Agost habitantes: 4752
+  Población: Agres habitantes: 583
+  Población: Agullent habitantes: 2435
+  Población: Aielo de Malferit habitantes: 4657
+  Población: Aielo de Rugat habitantes: 166
+  Población: Aigües habitantes: 984
+  Población: Aín habitantes: 129
+  Población: Albaida habitantes: 6031
+</code></pre>
+<p><strong>Ejercicio C9:</strong> Crea una función que dado el nombre de una población y una comarca nos permita establecer la lengua para esa población.</p>
+<pre><code>  SELECT SET_LLENGUA('Almudaina','Comtat','V');
+
+  RETURN: void
+</code></pre>
+<p><strong>Ejercicio C10:</strong> Crea una función llamada Densidad_centros que dado el nombre de una comarca nos devuelva la cantidad de centros que tiene por unidad de superficie.</p>
+<pre><code>  SELECT DENSIDAD_CENTRES('Plana Alta');
+
+  RETURN: 0.0219
+</code></pre>
+<p><strong>Ejercicio C11:</strong> La misma función del ejercicio anterior pero utilizando cursor explícito.</p>
+<p><strong>Ejercicio C12:</strong> Crea una función, utilizando al menos un cursor explícito, llamada ALTURA_MITJA, que nos permita obtener la altura media a la que están los centros en función de la comarca y de la lengua de la población (estos serán los parámetros de entrada).</p>
+<pre><code>  SELECT ALTURA_MITJA ('Comtat'.'v');
+
+  RETURN: 455
+</code></pre>
+<p><strong>Ejercicio C13:</strong> Crea una función, utilizando cursores, llamada POBLACIONS_GRANS que dado el nombre de una comarca nos devuelva los nombres de las poblaciones de la comarca que tienen una población superior en un 50% a la media de población de la provincia.</p>
+<p><img alt="" src="../T7_e13.png" /></p>
+<p><strong>Ejercicio C14:</strong> Crea una función, utilizando cursores, llamada CENTRES_DUO , que dado el nombre de una comarca nos devuelva la cantidad total de centros de las dos poblaciones con mayor número de habitantes.</p>
+<p><img alt="" src="../T7_e14.png" /></p>
+<p><strong>Ejercicio C15:</strong> Crea una función  llamada INTRODUCIR_INSTITUTO(varchar,varchar,varchar,varchar,numeric,numeric), que acepte los parámetros indicados, uno por cada campo de la tabla INSTITUTS, que compruebe:</p>
+<ul>
+<li>Que el primer parámetro, el código del instituto, tenga exactamente 8 caracteres y que comience por 03, 12 o 46 (los códigos de provincia)</li>
+<li>Que el código postal esté entre 3001 y 3999, 12001 y 12999 o 46001 y 46999.
+Observa que el cod_m no hará falta comprobarlo, ya que es clave externa y saltaría el error si no es un código de municipio existente.</li>
+</ul>
+<blockquote>
+<pre><code> select introduir_intitut('46000000','Institut de prova','Castello','s/n',3001,12028);
+ select introduir_intitut('03000000','Institut de prova','Castello','s/n',3001,12028);
+</code></pre>
+</blockquote>
+<h2 id="triggers"><strong class="azul">Triggers</strong></h2>
+<p><strong>Ejercicio T1:</strong> Crear un trigger que, después de una inserción, actualice automáticamente la cantidad total de habitantes en la tabla provincies cada vez que se inserta una nueva población en la tabla poblacions.</p>
+<p><strong>Ejercicio T2:</strong> Crear un trigger que evite la actualización del nombre de una población en la tabla poblacions3 si  existe la comarca.</p>
+<p><strong>Ejercicio T3:</strong> Crear un trigger que evite la inserción de un nuevo instituto en la tabla instituts si el código de la población asociada no existe en la tabla poblacions.</p>
+<p><strong>Ejercicio T4:</strong> Crear un trigger, MOD_LLEN, que nos avise cuando una población cambia de lengua mayoritaria.  </p>
+<p><img alt="" src="../T7_t4.png" /></p>
+<p><strong>Ejercicio T5:</strong> Crea un trigger para llevar una auditoría de la tabla INSTITUTS para controlar todas las modificaciones que se hacen en la tabla. Para eso, por cada actualización hecha introduciremos una fila en la tabla AUDIT_INSTITUT (crearla previamente si no existe) con la siguiente información:</p>
+<ul>
+<li>
+<p>num_a: es la clave principal de la tabla, que será un autonumérico  (SERIAL)</p>
+</li>
+<li>
+<p>operacio: contendrá el tipo de operación de actualización realizada en la tabla INSTITUS,     que podrá ser: INSERT, DELETE o UPDATE</p>
+</li>
+<li>
+<p>codi_institut: código del instituto afectado por la operación de actualización.</p>
+</li>
+<li>
+<p>usuari: usuario que ha realizado la operación de actualización, se puede obtener con current_user; podríamos pensar que siempre será el mismo usuario que hace la operación, pero en realidad lo puede hacer todo usuario que tenga permiso de acceso a la Base de Datos. En la imagen se puede observar cómo el usuario postgres también ha hecho una operación de actualización.d’actualització</p>
+</li>
+<li>
+<p>data_op: fecha-hora (timestamp) de la actualtzación; se puede obtener con la función now()</p>
+</li>
+</ul>
+<p><img alt="" src="../T7_t5.png" /></p>
+<p>En la imagen se observa cómo se han hecho 3 actualizaciones desde el momento de creación del trigger, la última de ellas realizada por el usuario  postgres</p>
+<p><strong>Ejercicio T6:</strong> Crear un trigger que registre automáticamente en una tabla de auditoría, cada vez que se actualiza la población en la tabla poblacions, pero sólo si la población aumenta en más del 10%. En la tabla se guardará el valor de la población antes de ser actualizado. Crear la tabla audit_poblacions previamente, si no existe, con la siguiente información:
+ cod_m: códido de población
+ fecha:  fecha modificación
+ poblacion_anterior:  población antes de la actualización.</p>
+<!-- 
+
+## **Operadors**{.azul}
+
+**Ejercicio O1:** Crea el operador <| para mostrar el área del triángulo de dos operandos. Evidentemente se basará en una función que puedes llamar Triangulo con 2 parámetros numéricos, que serán la base y la altura del triangulo, y calculará su área. El resultado devuelto, por tanto, también será un numérico. Puedes comprobarlo con  SELECT 4 <| 3 que debe dar 6.
+
+**Ejercicio O2:** Crea dos operadores: <^ y >^,   que comparen si el primer número (numeric) es mayor que el doble del segundo (numeric) y devuelve un valor booleano en consecuencia.
+
+
+## **Funcions d'agregat**{.azul}
+
+**Ejercicio FA1:** Crea la función agregada SumaDoble que obtenga el total del doble de los valores de una columna de una tabla.
+
+**Ejercicio FA2:** crear una función agregada que calcule la raíz cuadrada de  la suma del cuadrado de los valores de una columna de una tabla. 
+
+-->
+
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../exercicis_de_tot_el_tema/" class="btn btn-neutral float-left" title="Exercicis de tot el tema"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../documentacio_ia/" class="btn btn-neutral float-right" title="Documentació amb IA">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../exercicis_de_tot_el_tema/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../documentacio_ia/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

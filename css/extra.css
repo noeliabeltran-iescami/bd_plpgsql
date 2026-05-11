@@ -1,0 +1,31 @@
+body, p, li, ul, ol, blockquote, pre, code, table {
+    font-size: 14px;  /* Ajusta este valor según tus preferencias */
+    line-height: 1.6;  /* Mejora la legibilidad */
+}
+p {
+    text-align: justify;
+}
+
+.wy-nav-content { 
+    max-width: 100%; 
+    padding: 2rem; 
+  } 
+  
+.md-content {
+    max-width: 100%; /* Ajusta este valor según tus necesidades */
+    margin: 0 auto; /* Centra el contenedor en la página */
+}
+
+.rojo {
+    color: red;
+}
+
+.azul {
+    color: #2980B9;
+    font-size: 16px;
+
+}
+
+.verde {
+    color: green;
+} 

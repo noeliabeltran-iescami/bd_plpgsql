@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>6. Utilització de cursors - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "6. Utilitzaci\u00f3 de cursors";
+        var mkdocs_page_input_path = "6_utilitzaci_de_cursors.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">6. Utilització de cursors</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#exercicis">Exercicis</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">6. Utilització de cursors</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="6-utilitzacio-de-cursors">6. Utilització de cursors</h1>
+<p>Un cursor és una variable que ens permet desplaçar-nos per les files d’una
+consulta de SQL.</p>
+<p>Hi ha dos tipus de cursors, els <strong>explícits</strong> i els <strong>implícits</strong>.</p>
+<p>Els explícits s'han de declarar expressament en la zona de declaracions. Els
+implícits no, seran únicament una sentència SQL que guarda el resultat en una
+variable. Porten implícita tota la mecànica dels cursors (declarar, obrir,
+utilitzar, tancar) que haurem de fer en els explícits.</p>
+<p><strong class="azul">CURSORS IMPLÍCITS</strong></p>
+<p>Consistiran en una sentència SQL dins d'un procediment o funció PL/pgSQL. Han
+de <strong>tornar només un valor</strong> (<strong>només una fila</strong>), i es guardaran en una
+variable per mig del <strong>INTO</strong> de la sentència SQL. Per exemple, la següent
+funció tornarà el número de poblacions.</p>
+<pre><code>CREATE FUNCTION quantes() RETURNS INTEGER AS '
+DECLARE
+    N INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO N FROM POBLACIONS;
+    RETURN N;
+END;
+' LANGUAGE plpgsql;
+
+
+SELECT quantes();
+</code></pre>
+<p>Però ara ho fa per l'eixida normal  </p>
+<p><strong class="azul">CURSORS EXPLÍCITS</strong></p>
+<p>Aquestos cursors s'han de declarar, bé en la zona de declaracions, bé en el
+moment d'obrir-los, com veurem més avant. I en la zona d’instruccions, primer
+haurem d’obrir (<strong>OPEN</strong>) el cursor (que és quan es farà la consulta SQL,
+guardant-se en una zona de memòria i quedant-se situat el cursor en la primera
+fila). Després ens anirem desplaçant fila a fila per fer un determinat
+tractament (<strong>FETCH</strong> : torna el valor i se situa a la següent fila). Per
+últim l’haurem de tancar (<strong>CLOSE</strong>).</p>
+<p>En la declaració del cursor seguirem la següent sintaxi:</p>
+<pre><code>_nom_ CURSOR [_paràmetres_] {FOR | IS} _sentència_select_
+</code></pre>
+<p>Encara que també tenim la possibilitat de definir-lo únicament com a
+<strong>refcursor</strong> (referència a cursor), sense dir quina és la sentència select.
+Aleshores l'haurem de definir en el moment d'obrir-lo. També tenim la
+possibilitat de passar-li un paràmetre. Ací tenim alguns exemples de definició
+de cursors:</p>
+<pre><code>DECLARE  
+    cur1 refcursor;  
+    cur2 CURSOR FOR SELECT nom,altura FROM POBLACIONS;  
+    cur3 CURSOR(p1 varchar) FOR SELECT nom,altura FROM POBLACIONS WHERE nom=p1;
+</code></pre>
+<p>La manera d'obrir-lo depèn de la manera com s'havia declarat. Si només s'havia
+posat <em><strong>refcursor</strong></em> s'haurà de col·locar la consulta. Si tenia paràmetres
+s'hauran de posar entre parèntesi. Aquesta seria una manera d'obrir els 3
+cursors definits anteriorment:</p>
+<pre><code>BEGIN  
+    OPEN cur1 FOR SELECT * FROM POBLACIONS;  
+    OPEN cur2;  
+    OPEN cur3('Vistabella');  
+    ....
+END;
+</code></pre>
+<p>Hi ha una altra manera d'obrir els cursors definits com a <em><strong>refcursor</strong></em> ,
+que permet especificar la consulta totalment en temps d'execució. Ací en tenim
+un exemple:</p>
+<pre><code>s := 'SELECT nom FROM ' || $1;  
+OPEN cur1 FOR EXECUTE s;
+</code></pre>
+<p>on la taula consultada ve donada com a paràmetre de la funció.</p>
+<p>Per accedir als distints camps de les successives files del cursor ho farem
+per mig de la sentència <strong>FETCH cur INTO var1 [, var2, ...]</strong> i aleshores
+tindrem els valors disponibles en les variables var1 (, var2, ...) que estaran
+prèviament declarades del mateix tipus. Així en l'exemple de dalt, tenim que
+el cursor <em><strong>cur2</strong></em> està definit en base a una sentència SQL que torna dues
+columnes (<em><strong>nom</strong></em> i <em><strong>altura</strong></em>). La sentència hauria de ser</p>
+<pre><code>FETCH cur2 INTO v_nom, v_altura
+</code></pre>
+<p>on <strong>v_nom</strong> i <strong>v_altura</strong> serien respectivament de tipus <strong>varchar</strong> i
+<strong>numeric</strong></p>
+<p>També podríem haver definir una variable de tipus <strong>RECORD</strong>. En aquest
+exemple suposem que la variable <strong>f</strong> és de tipus <strong>RECORD</strong></p>
+<pre><code>    FETCH cur2 INTO f
+</code></pre>
+<p>Després, per a accedir a un camp, posarem <strong>f.<em>nom_camp</em></strong>.</p>
+<p>Per a tancar el cursor utilitzarem la sentència <strong>CLOSE</strong>.</p>
+<p>L'habitual serà recórrer tot el cursor. El següent exemple trau tots els noms
+de les poblacions d'una comarca introduïda com a paràmetre de la funció,
+utilitzant un cursor:</p>
+<pre><code>CREATE FUNCTION pobl_com(text) RETURNS void AS $cos$
+DECLARE
+    v_nom VARCHAR;
+    cur CURSOR FOR SELECT nom FROM POBLACIONS
+                        WHERE nom_c = $1
+                        ORDER BY nom;
+BEGIN
+    OPEN cur;
+    FETCH cur INTO v_nom;
+    WHILE v_nom IS NOT NULL LOOP
+        RAISE NOTICE '%',v_nom;
+        FETCH cur INTO v_nom;
+    END LOOP;
+    CLOSE cur;
+END; $cos$ 
+LANGUAGE plpgsql;
+</code></pre>
+<p>La manera d'utilitzar aquesta funció serà:</p>
+<pre><code>SELECT pobl_com('Plana Alta');
+</code></pre>
+<p>Per a aquestes ocasions en les quals hem de recórrer totalment un cursor,
+tenim una variant del <strong>FOR</strong> que ens serà molt útil.</p>
+<pre><code>FOR var_fila IN sentència_select LOOP
+</code></pre>
+<p>on <strong>var_fila</strong> és una variable de tipus <strong>RECORD</strong> , i que anirà agafant els
+valors de les diferents files (fixeu-vos que s'ha de declarar, en contra de
+les variables comptador d'un bucle <strong>FOR</strong> normal). Hem d'observar que en el
+cas del bucle FOR hem de declarar la sentència SELECT en el mateix moment de
+crear el FOR, és a dir, no podem utilitzar un cursor definit en la zona de
+declaracions.</p>
+<p>Quan utilitzem el bucle FOR per a recórrer un cursor no caldrà fer l'acció
+d'obrir, ni de situar-nos al següent, ni de tancar, ja que es fan de forma
+implícita en el bucle. Reconstruïm l'exemple anterior:</p>
+<pre><code>CREATE FUNCTION pobl_com_2(text) RETURNS void AS $cos$
+DECLARE
+    f RECORD;
+BEGIN
+    FOR f IN SELECT nom FROM POBLACIONS
+                WHERE nom_c = $1
+                ORDER BY nom
+    LOOP
+        RAISE NOTICE '%',f.nom;
+    END LOOP;
+END;
+$cos$ LANGUAGE plpgsql;
+</code></pre>
+<p>Si volguérem construir la sentència SELECT en temps d'execució, posaríem
+EXECUTE, encara que açò potser siga massa avançat per a aquest curs:</p>
+<pre><code>FOR f IN EXECUTE 'SELECT nom FROM ' || $1 LOOP
+</code></pre>
+<p>Anem a veure un exemple. Volem calcular la <strong>MEDIANA</strong> de l'altura de les
+poblacions. La mediana es defineix com el valor que està al mig de tots si el
+número d’elements és imparell (1, 2, <strong>3</strong> , 4, 10), i com la mitjana entre
+els dos valors centrals si el número és parell (1, 2, <strong>3</strong> , <strong>4</strong> , 10, 20)
+-&gt; <strong>3’5</strong> , tenint en compte sempre que han d'estar ordenats. És suficient
+amb que entengueu el seu funcionament.</p>
+<pre><code>CREATE OR REPLACE FUNCTION MEDIANA() RETURNS NUMERIC AS $cos$
+DECLARE
+    cur CURSOR FOR SELECT altura FROM POBLACIONS
+                    ORDER BY altura;
+    aux INT2;
+    aux1 INT2;
+    i INT2;
+    n INT2;
+    n1 INT2;
+BEGIN
+    OPEN cur;
+    SELECT COUNT(altura) INTO n FROM POBLACIONS;
+    IF MOD(n,2) = 0
+        THEN n1 := n;
+        ELSE n1 := n+1;
+    END IF;
+    FOR i IN 1..n1/2 LOOP
+        FETCH cur INTO aux;
+    END LOOP;
+    IF MOD(n,2) = 0 THEN
+        FETCH cur INTO aux1;
+        aux := (aux + aux1) / 2;
+    END IF;
+    RETURN aux;
+END;
+$cos$ LANGUAGE plpgsql;
+
+
+SELECT MEDIANA();
+</code></pre>
+<h2 id="exercicis"><img alt="✏️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/270f.png" title=":pencil2:" />  Exercicis</h2>
+<p><strong>Ex_7</strong> - Fes una funció anomenada <strong>POBLACIONS_ALTES</strong> que accepte 2 paràmetres,
+el primer de tipus text que serà una comarca, i el segon numèric que serà una
+altura. Ha de traure les poblacions de la comarca del primer paràmetre que són
+més altes que el segon paràmetre. Mostrarem el nom de la població i l'altura.
+Aquest podria ser el resultat en executar-se:</p>
+<p><img alt="" src="../T7_6_Ex7.png" /></p>
+<p><strong>Ex_8</strong> - Fes una funció anomenada <strong>COMARQUES_NUMPOBLES</strong> sense paràmetres que
+traga per pantalla les comarques ordenades alfabèticament amb el número de
+pobles de cadascuna</p>
+<p><img alt="" src="../T7_6_Ex8.png" /></p>
+<p><strong>Ex_9</strong> - Fes una funció anomenada <strong>COMARQUES_NUMPOBLES_NUMINSTITUTS</strong> sense
+paràmetres que traga per pantalla les comarques ordenades alfabèticament amb
+el número de pobles de cadascuna i el número d'instituts. En la consulta
+tindrem dos dificultats:</p>
+<ul>
+<li>Hem d'agafar totes les poblacions, fins i tot les que no tenen institut</li>
+<li>Com que hem d'accedir als instituts, per a comptar els pobles haurem de comptar els pobles <strong>distints</strong> , i així si un poble té més d'un institut, no comptar-lo més d'una vegada</li>
+</ul>
+<p><img alt="" src="../T7_6_Ex9.png" /></p>
+<p><strong>Ex_10</strong> - Fes una funció anomenada <strong>NUM_HABITANTS_COMARCA</strong> que accepte un
+paràmetre de tipus text, i torne el número d'habitants d'eixa comarca</p>
+<p><img alt="" src="../T7_6_Ex10.png" /></p>
+<p><strong>Ex_11</strong> - Fer la funció <strong>COMARQUES_NUMHABITANTS</strong> sense paràmetres per a traure
+per pantalla totes les comarques i el número d'habitants. En la consulta has
+d'utilitzar obligatòriament la funció anterior</p>
+<p><img alt="" src="../T7_6_Ex11.png" /></p>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../5_funcions/" class="btn btn-neutral float-left" title="5. Funcions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../7_missatges_i_excepcions/" class="btn btn-neutral float-right" title="7. Missatges">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../5_funcions/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../7_missatges_i_excepcions/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

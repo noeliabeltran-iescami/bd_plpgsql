@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Exercicis de tot el tema - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Exercicis de tot el tema";
+        var mkdocs_page_input_path = "exercicis_de_tot_el_tema.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Exercicis de tot el tema</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#funcions">Funcions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#trigger">Trigger</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">Exercicis de tot el tema</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="exercicis-de-tot-el-tema">Exercicis de tot el tema</h1>
+<p>En la Base de Dades <strong>geo_local</strong> :  </p>
+<h2 id="funcions"><strong class="azul">Funcions</strong></h2>
+<p><strong>Ex_1</strong> - Crea una funció anomenada <strong>DEU_</strong><strong>Q</strong> , que traga els <strong>números del 1
+al 10</strong> i els seus <strong>quadrats</strong>. (Utilitza <strong>RAISE NOTICE</strong>).  </p>
+<p><strong>Ex_2</strong> - Fes una altra funció, <strong>IMP</strong> , que traga per pantalla els números
+<strong>imparells</strong> del 1 al 50. (Utilitza <strong>RAISE NOTICE</strong>).  </p>
+<p><strong>Ex_3</strong> - Fes una funció anomenada <strong>TAULA_MULT</strong> , per a que traga la taula de
+multiplicar del <strong>paràmetre</strong> que se li ha de passar. (Utilitza <strong>RAISE
+NOTICE</strong>). Aquest podria ser el seu aspecte, en executar-la:</p>
+<p><img alt="" src="../T7_5_e_1.png" /></p>
+<p><strong>Ex_4</strong> - Fes una funció, anomenada <strong>MAX2</strong> , que tinga dos paràmetres
+<strong>numèrics</strong> i que <strong>torne el màxim</strong> entre aquestos dos. (Ara ja <strong>no</strong> s'ha
+d'utilitzar <strong>RAISE NOTICE</strong>).  </p>
+<p><strong>Ex_5</strong> - Utilitza l'anterior per a crear <strong>MAX3</strong>. Has d'utilitzar
+obligatòriament la funció <strong>MAX2</strong>  </p>
+<p><strong>Ex_6</strong> - (<strong>Voluntari</strong>) Fes la funció <strong>LAT_A_TEXT</strong> , tenint en compte que ha
+de quedar com en la taula <strong>POBLACIONS</strong>. Segurament la dificultat més gran
+serà aconseguir que apareguen les cometes després dels minuts i dels segons.</p>
+<h2 id="cursors"><strong class="azul">Cursors</strong></h2>
+<p><strong>Ex_7</strong> - Fes una funció anomeneda <strong>POBLACIONS_ALTES</strong> que accepte 2 paràmetres,
+el primer de tipus text que serà una comarca, i el segon numèric que serà una
+altura. Ha de traure les poblacions de la comarca del primer paràmetre que són
+més altes que el segon paràmetre. Mostrarem el nom de la població i l'altura.
+Aquest podria ser el resultat en executar-se:</p>
+<p><img alt="" src="../T7_6_Ex7.png" /></p>
+<p><strong>Ex_8</strong> - Fes una funció anomenada <strong>COMARQUES_NUMPOBLES</strong> sense paràmetres que
+traga per pantalla les comarques ordenades alfabèticament amb el número de
+pobles de cadascuna</p>
+<p><img alt="" src="../T7_6_Ex8.png" /></p>
+<p><strong>Ex_9</strong> - Fes una funció anomenada <strong>COMARQUES_NUMPOBLES_NUMINSTITUTS</strong> sense
+paràmetres que traga per pantalla les comarques ordenades alfabèticament amb
+el número de pobles de cadascuna i el número d'instituts. En la consulta
+tindrem dos dificultats:</p>
+<ul>
+<li>Hem d'agafar totes les poblacions, fins i tot les que no tenen institut</li>
+<li>Com que hem d'accedir als instituts, per a comptar els pobles haurem de comptar els pobles distints, i així si un poble té més d'un institut, no comptar-lo més d'una vegada</li>
+</ul>
+<p><img alt="" src="../T7_6_Ex9.png" /></p>
+<p><strong>Ex_10</strong> - Fes una funció anomenada <strong>NUM_HABITANTS_COMARCA</strong> que accepte un
+paràmetre de tipus text, i torne el número d'habitants d'eixa comarca</p>
+<p><img alt="" src="../T7_6_Ex10.png" /></p>
+<p><strong>Ex_11</strong> - Fer la funció <strong>COMARQUES_NUMHABITANTS</strong> sense paràmetres per a traure
+per pantalla totes les comarques i el número d'habitants. En la consulta has
+d'utilitzar obligatòriament la funció anterior</p>
+<p><img alt="" src="../T7_6_Ex11.png" /></p>
+<h2 id="trigger"><strong class="azul">Trigger</strong></h2>
+<p><strong>Ex_12</strong> - Crear un trigger anomenat <strong>TR_ALT_POS</strong> que controle que l'altura
+d'una nova població siga estrictament positiva. La funció en la qual es basa
+es pot anomenar <strong>ALT_POS</strong>.</p>
+<p><strong>Ex_13</strong> - Modificar l'anterior per a que ho controle també quan es tracta d'una
+modificació.</p>
+<p><strong>Ex_14</strong> - Crear un trigger anomenat <strong>TR_EXT_0_1000</strong> que controle que l'extensió
+d'un municipi (població) estiga obligatòriament entre 0 i 1000, i ha de ser
+sempre, tant si s'insereix una nova població com si es modifica. Però en
+aquesta ocasió, en compte de traure un error, el que farem serà modificar
+aquest valor: si és major que 1000, li donarem el valor 1000, i si és negatiu
+li posarem 0. Ho aconseguirem modificant <strong>NEW.extensio</strong> , i com la funció
+del trigger torna sempre NEW, doncs agafarà el nou valor. Anomeneu a la funció
+<strong>EXT_0_1000</strong>.</p>
+<p><strong>Ex_15</strong> - <strong>VOLUNTARI</strong>. En la taula POBLACIONS3 tenim controlat que la latitud
+introduïda siga correcta per mig del tipus lat, però no en la taula
+POBLACIONS, on és de tipus VARCHAR(50) i per tant es podria introduir una
+latitud incorrecta molt fàcilment. 
+Crea un trigger que controle que quan s'introdueix o es modifica la <strong>latitud</strong> de <strong>POBLACIONS</strong> siga correcta. Per a això</p>
+<ul>
+<li>Els caràcter 1 i 2 han de ser els <strong>graus</strong> , que han d'estar entre 00 i 90</li>
+<li>El caràcter 3 ha de ser <strong>º</strong></li>
+<li>Els caràcters 4 i 5 formen els <strong>minuts</strong> , i han d'estar entre 00 i 59</li>
+<li>El caràcter 6 ha de ser <strong>'</strong></li>
+<li>Els caràcters 7 i 8 formen els <strong>segons</strong> , i han d'estar entre 00 i 59</li>
+<li>El caràcter 9 ha de ser <strong>"</strong></li>
+<li>El caràcter 10 ha de ser <strong>N</strong> o <strong>S</strong></li>
+<li>Si no s'acompleix alguna de les restriccions anteriors, ha d'eixir un error dient que la latitud ha d'estar entre 00º00'00"N i 90º00'00"N , o entre 00º00'00"S i 90º00'00"S</li>
+</ul>
+<!--
+**Ex_16** - Crear els dos **operadors de comparació** que quedaven per al tipus
+**lat** : **< **i **< =**
+
+**Ex_17** - Crear la funció d'agregat **MIN** per al tipus de dades **lat**.
+
+-->
+<!--
+**Ex_18** - Fes una funció en PL/pgSQL anomenada
+**DENSITAT_CENTRES** que donat el nom d'una comarca ens torne la quantitat de
+centres que té per unitat de superfície.
+
+![](T7_Ex_18.png)
+
+**Ex_19** - Fes una funció anomenada
+**introduir_institut(varchar,varchar,varchar,varchar,numeric,numeric)** , que
+accepte els paràmetres indicats, un per cada camp de la taula INSTITUTS, que
+comprove:
+
+  * Que el primer paràmetre, el codi de l’institut, tinga exactament 8 caràcters i que comence per 03, 12 o 46 (els codis de província)
+  * Que el codi postal estiga entre 3001 i 3999, 12001 i 12999 o 46001 i 46999
+  * Observa que el cod_m no caldrà comprovar-lo, ja que és clau externa i saltaria l’error si no és un codi de municipi existent
+
+En cas que tot siga correcte, s’ha d’introduir el nou institut. En cas
+contrari ha de saltar un error
+
+**Ex_20** - Fes un trigger per a portar una auditoria de la taula
+**INSTITUTS** per a controlar totes les modificacions que es fan en la taula
+INSTITUTS. Per a això per cada actualització feta, introduirem una fila en la
+taula nova anomenada**AUDIT_INSTITUT** (creant-la prèviament si no existeix)
+amb la següent informació:
+
+  * **num_a** : és la clau principal de la taula, que serà un autonumèric (SERIAL)
+  * **operacio** : contindrà el tipus d’operació d’actualització realitzada en la taula INSTITUTS, que podrà ser: INSERT, DELETE o UPDATE
+  * **codi_institut** : codi del institut afectat per l’operació d’actualització
+  * **usuari** : usuari que ha realitzat l’operació d’actualització; es pot obtenir amb **current_user** ;  
+podríem pensar que sempre serà el mateix usuari qui fa l’operació, però en
+realitat ho pot fer tot usuari que tinga permís d’accés a la Base de Dades. En
+la imatge es pot observar com l’usuari **postgres** també ha fet una operació
+d’actualització
+
+  * **data_op** : data-hora (timestamp) de l’actualització; es pot obtenir amb la funció **now()**
+
+En la imatge s’observa com s’han fet 3 actualitzacions des del moment de
+creació del trigger, l’ultima d’elles realitzada per l’usuari **postgres**.
+Evidentment, la manera de comprovar-lo vosaltres és fer operacions
+d'actualització i el resultat ha de ser obligatòriament deferent:
+
+![](T7_Ex_20.png)
+-->
+
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../8_triggers/" class="btn btn-neutral float-left" title="8. Triggers"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../exercicis_repas/" class="btn btn-neutral float-right" title="Exercicis de repàs">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../8_triggers/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../exercicis_repas/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

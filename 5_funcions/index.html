@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>5. Funcions - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "5. Funcions";
+        var mkdocs_page_input_path = "5_funcions.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">5. Funcions</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#exercicis">Exercicis</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#nota-uso-de-procedimientos-procedure">NOTA: Uso de Procedimientos (PROCEDURE)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#sintaxis-basica">Sintaxis básica</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#procedimientos-con-control-transaccional">Procedimientos con control transaccional</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">5. Funcions</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="5-funcions">5. Funcions</h1>
+<p>La sintaxi general (i en principi per a qualsevol llenguatge) de la instrucció
+de creació de funcions és la següent:</p>
+<pre><code>CREATE [OR REPLACE] FUNCTION nom_funció [(llista_paràmetres)] RETURNS tipus_del_valor_tornat AS '  
+     instruccions
+' LANGUAGE llenguatge;
+</code></pre>
+<p>on el llenguatge potser un dels definits (SQL, PL/pgSQL, ...).</p>
+<p>El cos de la funció pot anar entre cometes simples, o entre un separador que
+comence i acabe per <strong>$</strong> (per exemple <strong>$cos$</strong>) i que ha de ser igual al
+principi i al final, com veurem en un exemple més avant.</p>
+<p>Concretament, en el cas de PL/pgSQL, podem refinar un poc més la sintaxi</p>
+<pre><code>CREATE [OR REPLACE] FUNCTION nom_funció [(llista_paràmetres)]  
+    RETURNS tipus_del_valor_tornat AS '
+[DECLARE  
+    declaració de variables]
+BEGIN  
+    instruccions  
+    RETURN expressió
+END;  
+' LANGUAGE plpgsql;
+</code></pre>
+<p>Si la funció torna un valor (i per tant l'hem declarada com a que retorna un
+valor), la instrucció que ens permet retornar el valor és <strong>RETURN</strong></p>
+<p>Per exemple, anem a crear una funció que passe de pessetes a euros. Ho podem
+fer sobre la Base de Dades <strong>geo_999x</strong> :</p>
+<pre><code>CREATE FUNCTION EUROS(n int4) RETURNS numeric AS '
+BEGIN
+    RETURN ROUND(n/166.386,2);
+END; ' LANGUAGE plpgsql;
+
+
+SELECT euros(1000);
+</code></pre>
+<p>Els tipus de dades de tornada pot ser qualsevol, fins i tot un creat per
+l'usuari. I si volem que torne més d'un valor, podríem crear un tipus compost
+que abarque els valors que volem que torne.</p>
+<p>Tenim la possibilitat de posar noms als paràmetres (en el cas anterior n), o
+no, i aleshores la manera de fer-los referència és per mig de <strong>$1</strong> per al
+primer paràmetre, <strong>$2</strong> per al segon, ... Així la mateixa funció, sense
+gastar nom de paràmetre quedaria:</p>
+<pre><code>CREATE OR REPLACE FUNCTION EUROS2(int4) RETURNS numeric AS '
+BEGIN
+    RETURN ROUND($1/166.386,2);
+END; ' LANGUAGE plpgsql;
+</code></pre>
+<p>Anem a veure un altre exemple: una funció que puga convertir una latitud en
+format text al tipus de dades que ens vam crear en el tema 6, part 3, el tipus
+<strong>lat</strong>. Les instruccions estan en el punt 0 (Nota inicial)</p>
+<p>I ara anem a fer la funció que passa de tipus <strong>Text</strong> a tipus <strong>lat</strong> :</p>
+<pre><code>CREATE OR REPLACE FUNCTION text_a_lat(text) RETURNS lat as $COS$
+DECLARE
+    aux lat;
+BEGIN
+    IF $1 IS NOT NULL THEN
+        aux.g := SUBSTR($1,1,STRPOS($1,'º')-1);
+        aux.m := SUBSTR($1, STRPOS($1,'º')+1, STRPOS($1,'''') - STRPOS($1,'º')-1);
+        aux.s := SUBSTR($1, STRPOS($1,'''')+1, STRPOS($1,'"') - STRPOS($1,'''')-1);
+        aux.h := SUBSTR($1,STRPOS($1,'"')+1);
+    ELSE aux := (NULL,NULL,NULL,NULL);
+    END IF;
+    RETURN aux;
+END; $COS$
+LANGUAGE plpgsql;
+</code></pre>
+<p>Hem posat <strong>$COS$</strong> per a delimitar el cos de la funció, per evitar problemes
+amb les moltes cometes que hi ha. I quan busquem la cometa, doncs en posem 4:
+la primera i l'última són obligatòries i delimiten la constant alfanumèrica. I
+al mig en posem 2 més per a marcar la cometa.</p>
+<p>Podem provar a veure si va bé:</p>
+<pre><code>SELECT nom,latitud,text_a_lat(latitud),nom_c FROM POBLACIONS;
+</code></pre>
+<p>Si la funció va bé, fins i tot la podríem utilitzar per omplir la taula
+<strong>POBLACIONS3</strong> (està creada en el punt <strong>0. Nota inicial</strong>), que l'havíem
+creada amb el tipus <strong>lat</strong> (ens convindria eliminar primer les possibles
+files que hi hagen creades).</p>
+<pre><code>DELETE FROM POBLACIONS3;
+</code></pre>
+<blockquote></blockquote>
+<pre><code>INSERT INTO POBLACIONS3
+    SELECT nom,text_a_lat(latitud),nom_c FROM POBLACIONS;
+</code></pre>
+<p>La funció inversa sembla més fàcil. L'únic problema, en tot cas, és controlar
+que minuts i segons sempre siguen de dues xifres. I en tot cas llevar espais
+en blanc que queden pel mig. I haurem d'anar amb compte amb la cometa.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En les pràctiques següents en moltes ocasions es diu "traure per pantalla". I
+són funcions que no tenen paràmetre ni tornen cap valor. Encara que açò no
+serà el normal en PostgreSQL, per a practicar pot anar bé. La manera de crear
+aquestes funcions és com en el següent exemple, en el qual creem una funció
+que trau per pantalla el número PI:</p>
+</div>
+<blockquote></blockquote>
+<pre><code>    CREATE OR REPLACE FUNCTION traure_pi() RETURNS void as $COS$
+    begin
+        raise notice 'El número PI és: %',PI();
+    end; $COS$
+    LANGUAGE 'plpgsql';
+</code></pre>
+<p>En aquesta ocasió hem posat moltes paraules en minúscules, per a demostrar que
+no importen majúscules i minúscules.</p>
+<p>El resultat, si és que ho fem des de DBeaver, el veurem fent una altra
+consulta SQL posant</p>
+<pre><code> SELECT traure_pi();
+</code></pre>
+<p>i el resultat el veuríem en la pestanya <strong>Output</strong> , ja que hem provocat
+traure un missatge.</p>
+<p>Com veieu estem utilitzant la sentència <strong>RAISE NOTICE</strong> , que la veurem
+millor en la pregunta 7 d'aquest tema, però que ja podem avançar que el que fa
+és traure una línia en la pestanya de missatges amb el començament
+<strong>NOTICE:</strong>. Posarem entre cometes simples el text que volem mostrar, i per a
+traure el contingut d'una variable, posarem entre les cometes un <strong>%</strong> , i al
+final, separat per coma la variable de la qual volem mostrar el contingut.
+Podem posar més d'un %, i al final haurem de posar (separades per comes)
+tantes variables o expressions com % hem posat entre cometes. Ho veurem millor
+en els següents exemples.</p>
+<p>Un altre exemple, també d'una funció que no torna res, sinó que "trau per
+pantalla" els números del 1 al 10:</p>
+<pre><code>CREATE OR REPLACE FUNCTION deu() RETURNS VOID as $COS$
+BEGIN
+    FOR i IN 1..10 LOOP
+        RAISE NOTICE '%',i;
+    END LOOP;
+END; $COS$
+LANGUAGE 'plpgsql';
+</code></pre>
+<p>Quan l'executem:</p>
+<pre><code>SELECT deu();
+</code></pre>
+<p>Ens eixirà aquest resultat en la pestanya de Output:</p>
+<p><img alt="" src="../T7_5_1.png" /></p>
+<p>Una variant seria traure els números del 1 al 10 i el seu doble. Observeu com
+posem 2 vegades <strong>%</strong>, i després posem 2 coses a mostrar, separades per
+comes: <strong>i, i*2</strong></p>
+<pre><code>CREATE OR REPLACE FUNCTION deu_doble() RETURNS VOID as $COS$
+BEGIN
+    FOR i IN 1..10 LOOP
+        RAISE NOTICE 'Número: %. Doble: %',i,i*2;
+    END LOOP;
+END; $COS$
+LANGUAGE 'plpgsql';
+
+
+SELECT deu_doble();
+</code></pre>
+<p><img alt="" src="../T7_5_2.png" /></p>
+<h3 id="exercicis"><img alt="✏️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/270f.png" title=":pencil2:" /> Exercicis</h3>
+<p>En la Base de Dades <strong>geo_local</strong> :  </p>
+<p><strong>Ex_1</strong> - Crea una funció anomenada <strong>DEU_</strong><strong>Q</strong> , que traga els <strong>números del 1
+al 10</strong> i els seus <strong>quadrats</strong>. (Utilitza <strong>RAISE NOTICE</strong>).  </p>
+<p><strong>Ex_2</strong> - Fes una altra funció, <strong>IMP</strong> , que traga per pantalla els números
+<strong>imparells</strong> del 1 al 50. (Utilitza <strong>RAISE NOTICE</strong>).  </p>
+<p><strong>Ex_3</strong> - Fes una funció anomenada <strong>TAULA_MULT</strong> , per a que traga la taula de
+multiplicar del <strong>paràmetre</strong> que se li ha de passar. (Utilitza <strong>RAISE
+NOTICE</strong>). Aquest podria ser el seu aspecte, en executar-la:</p>
+<p><img alt="" src="../T7_5_e_1.png" /></p>
+<p><strong>Ex_4</strong> - Fes una funció, anomenada <strong>MAX2</strong> , que tinga dos paràmetres
+<strong>numèrics</strong> i que <strong>torne el màxim</strong> entre aquestos dos. (Ara ja <strong>no</strong> s'ha
+d'utilitzar <strong>RAISE NOTICE</strong>). Podeu comprovar el seu funcionament fent per
+exemple <strong>SELECT MAX(5,7); SELECT MAX(15,7)</strong>. Sempre ha de mostrar el màxim
+dels dos.  </p>
+<p><strong>Ex_5</strong> - Utilitza l'anterior per a crear <strong>MAX3</strong>. Has d'utilitzar
+obligatòriament la funció <strong>MAX2</strong>  </p>
+<p><strong>Ex_6</strong> - (<strong>Voluntari</strong>) Fes la funció <strong>LAT_A_TEXT</strong> , tenint en compte que ha
+de quedar com en la taula <strong>POBLACIONS</strong>. Segurament la dificultat més gran
+serà aconseguir que apareguen les cometes després dels minuts i dels segons.</p>
+<h2 id="nota-uso-de-procedimientos-procedure">NOTA: Uso de Procedimientos (PROCEDURE)</h2>
+<p>Los procedimientos almacenados (stored procedures) son bloques de código que se guardan en la base de datos y que permiten ejecutar una secuencia de instrucciones SQL. Fueron incorporados en PostgreSQL a partir de la versión 11.</p>
+<p>A diferencia de las funciones, los procedimientos:</p>
+<p>❌ <strong>No devuelven valores</strong>.</p>
+<p>✔ <strong>Se ejecutan con <code>CALL</code></strong>, no con <code>SELECT</code>.</p>
+<p>✔ <strong>Permiten manejar transacciones internas</strong> (<code>COMMIT</code>, <code>ROLLBACK</code>).</p>
+<p>✔ Son ideales para <strong>procesos complejos</strong>, <strong>tareas administrativas</strong> o <strong>operaciones en lote</strong>.</p>
+<h3 id="sintaxis-basica">Sintaxis básica</h3>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">nombre_procedimiento</span><span class="p">(</span><span class="n">parámetros</span><span class="p">)</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span>
+<span class="k">AS</span><span class="w"> </span><span class="err">$$</span>
+<span class="k">BEGIN</span>
+<span class="w">    </span><span class="c1">-- Código SQL / PLpgSQL</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">;</span>
+</code></pre></div>
+<strong>▶ Ejecución</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">nombre_procedimiento</span><span class="p">(</span><span class="n">valor1</span><span class="p">,</span><span class="w"> </span><span class="n">valor2</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Ejemplo</strong> :  Veamos el mismo ejemplo de la función <code>deu()</code>, que mostraba por pantalla los números del 1 al 10 y no devolvía nada (<code>RETURN void</code>). Para este ejemplo en concreto, también podríamos haber utilizado un <code>PROCEDURE</code>.  </p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">deu</span><span class="p">()</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span>
+<span class="k">AS</span><span class="w"> </span><span class="err">$$</span>
+<span class="k">BEGIN</span>
+<span class="w">   </span><span class="k">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="mi">1</span><span class="p">..</span><span class="mi">10</span><span class="w"> </span><span class="n">LOOP</span>
+<span class="w">        </span><span class="n">RAISE</span><span class="w"> </span><span class="n">NOTICE</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">,</span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="n">LOOP</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span><span class="w"> </span><span class="err">$$</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>▶ Ejecución</strong></p>
+<p>Ahora, al ser procedimiento debemos utilizar <code>CALL</code> y no <code>SELECT</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">deu</span><span class="p">();</span>
+</code></pre></div>
+<h4 id="procedimientos-con-control-transaccional">Procedimientos con control transaccional</h4>
+<p>Uno de los usos principales de los <strong><code>PROCEDURE</code></strong> en PostgreSQL es el manejo de transacciones.
+A diferencia de las funciones (<code>FUNCTION</code>), los procedimientos permiten utilizar las sentencias <code>COMMIT</code> y <code>ROLLBACK</code>, lo cual es imprescindible cuando se realizan operaciones DML como <code>INSERT, UPDATE o DELETE</code>.
+Las funciones no permiten control explícito de transacciones, por lo que no pueden deshacer ni confirmar cambios dentro de su ejecución. Por eso, cuando es necesario procesar datos y decidir si confirmar o revertir los cambios, se debe utilizar un <code>PROCEDURE</code>.</p>
+<p>Veamos un ejemplo de un procedimiento que actualice la provincia de una comarca y use control transaccional (<code>COMMIT</code> / <code>ROLLBACK</code>) .</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">actualizar_provincia_comarca</span><span class="p">(</span><span class="n">p_nom_c</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span><span class="w"> </span><span class="n">p_nueva_prov</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">)</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span>
+<span class="k">AS</span><span class="w"> </span><span class="err">$$</span>
+<span class="k">BEGIN</span>
+<span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">comarques</span>
+<span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">provincia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p_nueva_prov</span>
+<span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nom_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p_nom_c</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">FOUND</span><span class="w"> </span><span class="k">THEN</span>
+<span class="w">    </span><span class="n">RAISE</span><span class="w"> </span><span class="n">NOTICE</span><span class="w"> </span><span class="s1">&#39;No existe la comarca con nombre &quot;%&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">p_nom_c</span><span class="p">;</span>
+<span class="w">    </span><span class="k">ROLLBACK</span><span class="p">;</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="p">;</span>
+<span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">RAISE</span><span class="w"> </span><span class="n">NOTICE</span><span class="w"> </span><span class="s1">&#39;Provincia de la comarca &quot;%&quot; actualizada a &quot;%&quot;.&#39;</span><span class="p">,</span>
+<span class="w">               </span><span class="n">p_nom_c</span><span class="p">,</span><span class="w"> </span><span class="n">p_nueva_prov</span><span class="p">;</span>
+<span class="w">  </span><span class="k">COMMIT</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>▶ Ejecución</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">actualizar_provincia_comarca</span><span class="p">(</span><span class="s1">&#39;Baix Maestrat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Castellón&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../4_instruccions/" class="btn btn-neutral float-left" title="4. Instruccions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../6_utilitzaci_de_cursors/" class="btn btn-neutral float-right" title="6. Utilització de cursors">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../4_instruccions/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../6_utilitzaci_de_cursors/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

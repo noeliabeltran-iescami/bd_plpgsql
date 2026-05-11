@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>9. Creació d'altres objectes basats en funcions - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "9. Creaci\u00f3 d\u0027altres objectes basats en funcions";
+        var mkdocs_page_input_path = "9_creaci_daltres_objectes_basats_en_funcions.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">9. Creació d'altres objectes basats en funcions</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="9-creacio-daltres-objectes-basats-en-funcions">9. Creació d'altres objectes basats en funcions</h1>
+<p>Ara que ja sabem crear funcions, i ho hem practicat fins i tot per a crear
+triggers, podríem plantejar-nos crear altres objectes, com operadors,
+operadors de classe, funcions d'agregat, ..., per als quals hem d'utilitzar
+funcions. Així és com veurem l'extensibilitat de PostgreSQL, com és de
+versàtil i ens podem crear objectes a la nostra mida.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En DBeaver, no es visualitzen per defecte tots
+els tipus d'objectes de la Base de Dades. Per poder visulitzar-los has d'executar la consulta: <strong>SELECT * FROM pg_operator</strong></p>
+</div>
+<h2 id="91-operadors">9.1 Operadors</h2>
+<p>Per a definir un nou operador especificarem el símbol que utilitzarem, el o
+els operands i la funció que l'implementa.</p>
+<p>La sintaxi és:</p>
+<pre><code>CREATE OPERATOR name (  
+    PROCEDURE = funcname  
+    [, LEFTARG = lefttype ] [, RIGHTARG = righttype ]  
+    [, COMMUTATOR = com_op ] [, NEGATOR = neg_op ]  
+    ...
+)
+</code></pre>
+<p>Hi ha més opcions, que per a la utilitat d'aquest curs obviarem.</p>
+<ul>
+<li>En el nom de l'operador posarem un o més d'un caràcters de la següent llista:</li>
+</ul>
+<p><strong>+ - * / &lt; &gt; = ~ ! @ # % ^ &amp; | ` ?</strong></p>
+<p>Hi ha algunes limitacions, que podem veure en la documentació.</p>
+<ul>
+<li>
+<p>Sempre hem de posar la funció que implementa l'operador.</p>
+</li>
+<li>
+<p>Si l'operador és d'un únic operand, l'haurem d'especificar (el de la dreta o de l'esquerra, el que preferim). Si és de dos operands s'hauren d'especificar els dos.</p>
+</li>
+<li>
+<p><strong>COMMUTATOR</strong> indica un altre operador que funciona igual canviant l'ordre dels paràmetres (en numèrics el commutador de <strong>&lt;</strong> és <strong>&gt;</strong>)</p>
+</li>
+<li>
+<p><strong>NEGATOR</strong> indica un altre operador equivalent a negar aquest (en numèrics el negador de <strong>&lt;</strong> és <strong>&gt; =</strong>)</p>
+</li>
+</ul>
+<p>Per exemple anem a crear l'operador <strong>MÀXIM</strong>(<strong>/|</strong>) que calcula el màxim
+entre dos números. Utilitzarem la funció <strong>MAX2</strong> que ja tenim creada (és
+l'exercici 4)</p>
+<pre><code>CREATE OPERATOR /| (
+    PROCEDURE = MAX2, LEFTARG = numeric, RIGHTARG = numeric);
+</code></pre>
+<p>Podem comprovar el seu funcionament amb la sentència:</p>
+<pre><code>SELECT 23 /| 15;
+</code></pre>
+<p>Recordem que els operadors estan definits per a determinats operands. Així,
+per exemple, la següent sentència <strong class="rojo">no funcionarà</strong> perquè no tenim definit
+l'operador per a operands de text:</p>
+<pre><code>SELECT 'Alfa' /| 'Beta';
+</code></pre>
+<p>Per a esborrar un operador utilitzarem la sentència <strong>DROP OPERATOR</strong> , al
+qual únicament li haurem d'especificar l'operador a esborrar i entre
+parèntesis els tipus implicats</p>
+<pre><code>DROP OPERATOR /| (numeric, numeric);
+</code></pre>
+<p>Tampoc tenim definits els operands de comparació per al tipus <strong>lat</strong> , que
+havíem creat. I per tant coses com aquesta <strong class="rojo">no funcionen</strong>:</p>
+<pre><code>SELECT * FROM POBLACIONS3  
+WHERE latitud &gt; '(N,40,0,0)';
+</code></pre>
+<p>I si li posem el tipus del qual es tracta:</p>
+<pre><code>SELECT * FROM POBLACIONS3
+    WHERE latitud &gt; '(N,40,0,0)'::lat
+    ORDER BY nom;
+</code></pre>
+<p>potser no funcionen bé. Encara que sembla que va bé la cosa:</p>
+<p><img alt="" src="../T7_9_1_1.png" /></p>
+<p>el que ha fet en realitat és una comparació caràcter a caràcter</p>
+<p>Per a demostrar que no funciona bé inserim una ciutat que estiga a l'hemisferi
+sud: Rio de Janeiro (ja havíem quedat que no importava si es deteriorava la
+Base de Dades).</p>
+<pre><code>INSERT INTO POBLACIONS3
+    VALUES('Rio de Janeiro','(S,22,56,58)'::lat, NULL);
+</code></pre>
+<p>I si tornem a executar la sentència d'abans:</p>
+<pre><code>SELECT * FROM POBLACIONS3
+    WHERE latitud &gt; '(N,40,0,0)'::lat
+    ORDER BY nom;
+</code></pre>
+<p>ara ja es veu que va malament:</p>
+<p><img alt="" src="../T7_9_1_2.png" /></p>
+<p>Anem a intentar crear tots els operadors de comparació del tipus <strong>lat</strong></p>
+<p>Començarem per les funcions. No considerem quan un operand és nul, per fer-los
+més senzills. La d'igualtat és fàcil, ja que dos latituds són iguals si ho són
+tots els membres. Observeu que no hi ha problema per fer la comparació
+<strong>$1.h=$2.h</strong> , ja que són del domini <strong>hemi_lat</strong> basat en el tipus caràcter:</p>
+<pre><code>CREATE FUNCTION igual (lat,lat) RETURNS bool AS '
+BEGIN
+    RETURN $1.h=$2.h AND $1.g=$2.g AND $1.m=$2.m AND $1.s=$2.s;
+END; '
+LANGUAGE plpgsql;
+</code></pre>
+<p>I ara l'operador:</p>
+<pre><code>CREATE OPERATOR =
+    (LEFTARG = lat,
+    RIGHTARG = lat,
+    PROCEDURE = igual,
+    COMMUTATOR = = ,
+    NEGATOR = &lt;&gt;);
+</code></pre>
+<p>Observeu que hem posat el commutador igual a ell mateix i el negador a
+l'operador distint, encara que no el tenim definit.</p>
+<p>Ara aquesta instrucció ja funciona:</p>
+<pre><code>SELECT * FROM POBLACIONS3 
+    WHERE latitud = '(N,39,59,10)';
+</code></pre>
+<p>i fins i tot sap que ha de convertir a lat la cadena de caràcters (ja que
+només té un operador = amb un operand tipus <strong>lat</strong>).</p>
+<p>La funció <strong>distint</strong> només ha de negar l'igual. I ja podem gastar l'operador:</p>
+<pre><code>CREATE FUNCTION distint (lat,lat) RETURNS bool AS '
+BEGIN
+    RETURN NOT ($1 = $2);
+END; ' 
+LANGUAGE plpgsql;
+
+
+CREATE OPERATOR &lt;&gt;
+    (LEFTARG = lat,
+    RIGHTARG = lat,
+    PROCEDURE = distint,
+    COMMUTATOR = &lt;&gt; ,
+    NEGATOR = = );
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">"Nota important"</p>
+<p>Enguany tenim creades moltes Bases de Dades perquè l'alumnat és molt extens, i
+potser tenim un poc saturat el servidor.</p>
+<p>Siga per l'anterior o per alguna altra causa, estem detectant una sobrecàrrega
+entre les crides als operadors nous que estem creant.</p>
+<p>Per aquesta raó, encara que queda molt clara la funció <strong>distint</strong> (quan no
+són iguals), en compte d'utilitzar l'operador = serà millor cridar a la funció
+igual (en definitiva, l'operador = crida a la funció igual, per tant ens
+estalviem un pas). Com que anirem fent tots els operadors de comparació, si
+cridem sempre a les funcions i no a altres operadors, al final ens estalviarem
+molts passos.</p>
+<p>Per això, millor fer aquesta versió de la funció <strong>distint(lat,lat)</strong></p>
+<pre><code>CREATE OR REPLACE FUNCTION distint(lat, lat) RETURNS bool AS $cos$
+BEGIN
+    RETURN NOT igual($1,$2);
+END;   
+$cos$ LANGUAGE plpgsql;
+</code></pre>
+</div>
+<p>L'operador <strong>major</strong> és un poc més complicat. Hem de considerar una latitud
+major si està més al nord. Per tant a l'hemisferi nord quan més graus més al
+nord, però a l'hemisferi sud és al revés.</p>
+<pre><code>CREATE FUNCTION major (lat1 lat, lat2 lat) RETURNS bool AS $cos$
+DECLARE
+    aux bool;
+BEGIN
+    IF lat1.h='N' AND lat2.h='S' THEN aux := TRUE;
+    ELSIF lat1.h='S' AND lat2.h='N' THEN aux := FALSE;
+    ELSIF lat1.h='N' AND lat2.h='N' THEN                -- Hemisferi NORD
+        IF lat1.g &gt; lat2.g THEN aux := TRUE;
+        ELSIF lat1.g &lt; lat2.g THEN aux := FALSE;
+        ELSE
+            IF lat1.m &gt; lat2.m THEN aux := TRUE;
+            ELSIF lat1.m &lt; lat2.m THEN aux := FALSE;
+            ELSE
+                IF lat1.s &gt; lat2.s THEN aux := TRUE;
+                ELSE aux := FALSE; -- si són iguals és fals
+                END IF;
+            END IF;
+        END IF;
+    ELSE                                -- Hemisferi SUD, al revés que al NORD
+        IF lat1.g &lt; lat2.g THEN aux := TRUE;
+        ELSIF lat1.g &gt; lat2.g THEN aux := FALSE;
+        ELSE
+            IF lat1.m &lt; lat2.m THEN aux := TRUE;
+            ELSIF lat1.m &gt; lat2.m THEN aux := FALSE;
+            ELSE
+                IF lat1.s &lt; lat2.s THEN aux := TRUE;
+                ELSE aux := FALSE;
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+    RETURN aux;
+END; $cos$ 
+LANGUAGE plpgsql;
+</code></pre>
+<p>Segurament podria haver quedat més curt, però així crec que s'entén molt bé.
+Ara l'operador:</p>
+<pre><code>CREATE OPERATOR &gt;
+    (LEFTARG = lat,
+    RIGHTARG = lat,
+    PROCEDURE = major,
+    COMMUTATOR = &lt; ,
+    NEGATOR = &lt;= );
+</code></pre>
+<p>Podríem provar-lo així:</p>
+<pre><code>SELECT * FROM POBLACIONS3 
+    WHERE latitud &gt; '(N,40,0,0)'
+    ORDER BY NOM;
+</code></pre>
+<p>i podrem comprovar que Rio de Janeiro no apareixerà.</p>
+<p>Afortunadament tots els altres operadors es poden derivar dels que ja tenim:</p>
+<pre><code>CREATE OR REPLACE FUNCTION major_igual (lat,lat) RETURNS bool AS '
+BEGIN
+    RETURN ($1 &gt; $2) OR ($1=$2);
+END; ' LANGUAGE plpgsql;
+
+
+CREATE OPERATOR &gt;=
+    (LEFTARG = lat,
+    RIGHTARG = lat,
+    PROCEDURE = major_igual,
+    COMMUTATOR = &lt;= ,
+    NEGATOR = &lt; );
+</code></pre>
+<p>I el <strong>menor</strong> seria negant el major o igual i el <strong>menor o igual</strong> negant el
+major.</p>
+<div class="admonition note">
+<p class="admonition-title">"Nota important"</p>
+<p>Per la mateixa raó de la nota anterior, millor fer aquesta versió de la funció
+<strong>major_igual(lat,lat)</strong> :</p>
+<pre><code>CREATE OR REPLACE FUNCTION major_igual (lat,lat) RETURNS bool AS '
+BEGIN
+    RETURN major($1,$2) OR igual($1,$2);
+END; ' LANGUAGE plpgsql;
+</code></pre>
+</div>
+<p>I exactament igual amb les funcions <strong>menor(lat,lat)</strong> i
+<strong>menor_igual(lat,lat)</strong></p>
+<h2 id="exercicis"><img alt="✏️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/270f.png" title=":pencil2:" /> Exercicis</h2>
+<p>En la Base de Dades <strong>gelo_local</strong> :  </p>
+<p><strong>Ex_16</strong> - Crear els dos <strong>operadors de comparació</strong> que quedaven per al tipus
+<strong>lat</strong> : <strong>&lt; *<em>i *</em>&lt; =</strong>. Primer haureu de crear les 2 funcions que queden:
+<strong>menor(lat,lat)</strong> i <strong>menor_igual(lat,lat)</strong></p>
+<h2 id="92-operadors-de-classe">9.2 Operadors de classe</h2>
+<p>Hem fet els operadors de comparació per a un nou tipus de dades que hem creat,
+però a pesar d'això, no podem ordenar per un camp d'aquest tipus, és a dir,
+consultes com la següent encara no funcionen:</p>
+<pre><code>SELECT *
+    FROM POBLACIONS3
+    ORDER BY latitud DESC;
+</code></pre>
+<p>observeu com la primera és Rio de Janeiro, quan havia de ser l'última.</p>
+<p><img alt="" src="../T7_9_2_1.png" /></p>
+<p>Ens falta un pas més, construir un <strong>OPERADOR DE CLASSE</strong> (<em><strong>OPERATOR
+CLASS</strong></em>), que permetrà indexar per un camp d'aquest tipus. Això suposarà que
+podrem ordenar de forma ascendent o descendent, i que podrem crear índex
+formats per camps d'aquest tipus; fins i tot podrà ser, a partir d'aquest
+moment, clau principal.</p>
+<p>Una vegada tenim <strong>tots</strong> els operadors de comparació, només ens resta crear
+una funció de suport a l'operador i definir pròpiament l'operador de classe.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Abans de continuar, estigueu segurs que teniu tots els operadors creats,
+incloent <strong>&lt;</strong> i <strong>&lt; =</strong></p>
+</div>
+<p>La funció de suport ha de tenir dos paràmetres del tipus que volem, i tornar
+-1, 1 o 0, depenent de si el primer operand és menor, major o igual que el
+segon, respectivament.</p>
+<pre><code>CREATE OR REPLACE FUNCTION lat_cmp(lat1 lat,lat2 lat) RETURNS integer AS $cos$
+BEGIN
+    IF lat1 &lt; lat2 THEN return -1;
+    ELSEIF lat1 &gt; lat2 THEN return 1;
+    ELSE return 0;
+    END IF;
+END;
+$cos$ LANGUAGE 'plpgsql';
+</code></pre>
+<p>Ara ja podem definir l'operador de classe. Haurem de tenir <strong>privilegis
+d'administració</strong> (per evitar que qualsevol usuari puga crear operadors de
+classe). Haurem d'especificar:</p>
+<ul>
+<li>
+<p>El tipus de dades per a qui definim l'operador de classe.</p>
+</li>
+<li>
+<p>El mètode d'indexació que utilitzarem (normalment <strong>btree</strong> , <em><strong>b-arbre</strong></em>)</p>
+</li>
+<li>
+<p>L'estratègia d'ordenació, especificant quins són els nostres operadors i associant-los a números.</p>
+</li>
+<li>
+<p>També haurem d'especificar la funció de suport.</p>
+</li>
+</ul>
+<p>Lamentablement no teniu privilegis d'administració, per tant aquesta part no
+la podreu fer, únicament us podreu fiar. La definició de l'operador de classe
+quedarà així :</p>
+<pre><code>CREATE OPERATOR CLASS lat_op_cl DEFAULT  
+    FOR TYPE lat USING btree AS  
+    OPERATOR 1 &lt;,  
+    OPERATOR 2 &lt;=,  
+    OPERATOR 3 =,  
+    OPERATOR 4 &gt;=,  
+    OPERATOR 5 &gt;,  
+    FUNCTION 1 lat_cmp(lat, lat);
+</code></pre>
+<p>Si esteu molt molt interessats i voleu comprovar-lo, m'ho dieu a mi i us
+crearé aquest operador de classe.</p>
+<p>Ara ja ens funcionaria la següent sentència:</p>
+<pre><code>SELECT *
+    FROM POBLACIONS3
+    ORDER BY latitud DESC;
+</code></pre>
+<p>observeu com estem ordenant de forma ascendent, i la primera és Rio de
+Janeiro:</p>
+<p><img alt="" src="../T7_9_2_2.png" /></p>
+<p>I fins i tot, si fóra el cas, podríem definir el camp <strong>latitud</strong> com a clau
+principal, que no és el cas perquè ja és <strong>nom</strong>.</p>
+<h2 id="93-funcions-dagregat">9.3 Funcions d'agregat</h2>
+<p>En PostgreSQL també podem definir funcions d'agregat, de l'estil de <strong>MAX</strong> ,
+<strong>SUM</strong> , <strong>AVG</strong> , ... Podem fer-ho sobre qualsevol tipus, existent o definit
+per l'usuari</p>
+<p>Una funció d'agregat vindrà definida pel seu nom i pel tipus de dades. Per
+això encara <strong class="rojo">no funciona</strong> la sentència</p>
+<pre><code>SELECT MAX(latitud)  
+    FROM POBLACIONS3;
+</code></pre>
+<p>ja que <strong>MAX</strong> no està definida sobre el tipus de dades nou.</p>
+<p>A banda del tipus de dades, podrem jugar amb un tipus de dades intern, mentre
+es calcula la funció d'agregat, que no té per què ser igual al tipus de dades
+de la funció. I la funció d'agregat vindrà definida per una o dues funcions:
+una funció de transició d'estat (<em><strong>sfunc</strong></em>) que anirà calculant l'estat
+intern mentre van arribant nous valors; i opcionalment una altra funció final
+(<em><strong>ffunc</strong></em>) per a fer un últim càlcul i donar el valor final (per exemple en
+la mitjana <em><strong>sfunc</strong></em> anirà calculant la suma dels valors, i <em><strong>ffunc</strong></em>
+haurà de dividir pel nombre total d'elements).</p>
+<pre><code>sfunc( estat-intern, següent-item-dades ) ---&gt; següent-estat-intern
+
+ffunc( estat-intern ) ---&gt; valor-final
+</code></pre>
+<p>Opcionalment també podrem donar un valor inicial. La sintaxi és:</p>
+<pre><code>    CREATE AGGREGATE nom (  
+        BASETYPE = tipus_dades,  
+        SFUNC = sfunc,  
+        STYPE = tipus_dades_intern  
+        [ , FINALFUNC = ffunc ]  
+        [ , INITCOND = condició_inicial ]  
+        [ , SORTOP = operador_ordenació ]
+    )
+</code></pre>
+<p>Anem a crear la funció d'agregat MAX per al tipus de dades lat. Comencem per
+la funció d'estat, que en aquest cas senzillament anirà agafant el màxim. És,
+per tant, com la funció que calcula el màxim de dos números, però en lat. No
+tindrem en consideració els valors nuls, per no complicar la cosa.</p>
+<pre><code>CREATE OR REPLACE FUNCTION MAX2(lat1 lat,lat2 lat) RETURNS lat AS $cos$
+BEGIN
+    IF lat2 &gt; lat1 THEN RETURN lat2;
+    ELSE RETURN lat1;
+    END IF;
+END; $cos$ 
+LANGUAGE plpgsql;
+</code></pre>
+<p>Ara ja va la funció d'agregat:</p>
+<pre><code>CREATE AGGREGATE MAX (
+    BASETYPE = lat,
+    SFUNC = MAX2,
+    STYPE = lat,
+    INITCOND = '(S,90,0,0)');
+</code></pre>
+<p>Hem posat com a valor inicial el pol sud, per evitar el problema dels nuls. Si
+tot ha anat bé, ja podrem fer consultes com la del principi d'aquesta
+pregunta.</p>
+<pre><code>SELECT MAX(latitud)
+    FROM POBLACIONS3;
+</code></pre>
+<p>Si havíem creat també l'operador de classe, les podrem complicar ordenant-les.
+Per exemple, podem traure la latitud màxima de cada comarca, ordenades de nord
+a sud:</p>
+<pre><code>SELECT comarca,MAX(latitud)
+    FROM POBLACIONS3
+    GROUP BY comarca
+    ORDER BY MAX(latitud) DESC;
+</code></pre>
+<p>Com sempre, la sentència d'esborrar és més senzilla. Per a esborrar una funció
+d'agregat, hem d'especificar el nom de la funció d'agregat i entre parèntesis
+el tipus implicat:</p>
+<pre><code>DROP AGGREGATE MAX (lat);
+</code></pre>
+<h2 id="exercicis_1"><img alt="✏️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/270f.png" title=":pencil2:" />  Exercicis</h2>
+<p>En la Base de Dades <strong>gelo_local</strong> :  </p>
+<p><strong>Ex_17</strong> - Crear la funció d'agregat <strong>MIN</strong> per al tipus de dades <strong>lat</strong>.    </p>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

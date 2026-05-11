@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>8. Triggers - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "8. Triggers";
+        var mkdocs_page_input_path = "8_triggers.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">8. Triggers</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#exercicis">Exercicis</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">8. Triggers</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="8-triggers">8. Triggers</h1>
+<p>Un <strong>TRIGGER</strong> o <strong>disparador</strong> és un procediment que se dispara quan
+s’acompleix una determinada condició que afecta a la Base de Dades: quan
+s’actualitza una o més d’una fila d’una determinada taula. En el moment de
+crear el trigger especificarem una funció que s'executarà quan es produesca
+l'event. Aquesta funció pot estar escrita en qualsevol llenguatge de
+programació instal·lat, i ha de tornar un valor especial: <em><strong>trigger</strong></em>.
+Juguem per tant a dues bandes. Primer amb la funció que s'executarà, i quan
+aquesta estiga creada, el trigger pròpiament dit.</p>
+<p>La sintaxi de creació del <em>trigger</em> és:</p>
+<pre><code>CREATE TRIGGER nom_trig  
+    {BEFORE | AFTER} {INSERT | DELETE | UPDATE} [OR {INSERT | DELETE |UPDATE} ...]  
+    ON nom_taula  
+    [FOR EACH {ROW | STATEMENT}]  
+    EXECUTE FUNCTION nom_funció ([paràmetres]);
+</code></pre>
+<p>Lamentablement no tenim l’opció <strong>OR REPLACE</strong> , que ens permetria no haver
+d’esborrar el <em>trigger</em> en cas de voler refer-lo (cosa prou normal). Per tant,
+en el cas tan habitual de voler refer un <em>trigger</em> , primer l'haurem
+d'esborrar (<strong>DROP TRIGGER</strong>) i després tornar a fer-lo, <strong>encara que si és
+una modificació en la funció no cal tocar el</strong> <em>trigger</em>.</p>
+<p><strong>BEFORE o AFTER</strong> indiquen quan s’ha d’activar el <em>trigger</em> : abans de
+produir-se l’acció d’inserir, esborrar o modificar, o després.</p>
+<p><strong>INSERT</strong> , <strong>DELETE</strong> o <strong>UPDATE</strong> indiquen quina acció d’actualització de
+la taula provoca (o pot provocar) el <em>trigger</em>.</p>
+<p>Una actualització pot afectar més d’una fila. Aleshores ens plantegem si s’ha
+de disparar el <em>trigger</em> per a cada actualització de cada fila, o si només una
+vegada (abans o després d’actualitzar). Ho podrem especificar per mig de <strong>FOR
+EACH ROW</strong> o <strong>FOR EACH STATEMENT</strong>. L'opció per defecte és la segona.</p>
+<p>Suposem que volem activar un disparador sempre abans d’inserir sobre la taula
+<strong>T1</strong> , per a cada fila, per si la introducció no fóra correcta:</p>
+<pre><code>CREATE TRIGGER trigger1 BEFORE INSERT ON T1 FOR EACH ROW  
+    EXECUTE FUNCTION ...;
+</code></pre>
+<p>I ara que volem activar un altre després d’esborrar un conjunt de files (per
+exemple per a actualitzar una altra taula):</p>
+<pre><code>CREATE TRIGGER trigger2 AFTER DELETE ON T1 FOR EACH STATEMENT  
+    EXECUTE FUNCTION ...;
+</code></pre>
+<p>Anem a parlar ara de la funció que es crida quan es dispara el <em>trigger</em>. És
+una funció especial, escrita en qualsevol llenguatge definit, que com hem
+comentat abans ha de tornar obligatòriament un valor <strong>TRIGGER</strong>. Aquesta funció pot tenir paràmetres, i òbviament hauran de coincidir aquestos en la definició de la funció i en la definició del <em>trigger</em>.</p>
+<p>Quan s'arriba a la funció, que nosaltres sempre la definirem en PL/pgSQL,
+s'han definit unes quantes variables especials. Anem a comentar-les:</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Tipus</th>
+<th>Descripció</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NEW</strong></td>
+<td>RECORD</td>
+<td>Conté la fila que va a inserir-se o la nova informació, si va a actualitzar-se.</td>
+</tr>
+<tr>
+<td><strong>OLD</strong></td>
+<td>RECORD</td>
+<td>Conté la fila que va a esborrar-se o la informació vella, si va a actualitzar-se.</td>
+</tr>
+<tr>
+<td><strong>TG_NAME</strong></td>
+<td>NAME</td>
+<td>Conté el nom del trigger que s'ha disparat i ha cridat aquesta funció.</td>
+</tr>
+<tr>
+<td><strong>TG_WHEN</strong></td>
+<td>TEXT</td>
+<td>Indica quan actua el trigger, <strong>BEFORE</strong> o <strong>AFTER</strong>.</td>
+</tr>
+<tr>
+<td><strong>TG_LEVEL</strong></td>
+<td>TEXT</td>
+<td>Indica de quina manera actua, <strong>ROW</strong> o <strong>STATEMENT</strong>.</td>
+</tr>
+<tr>
+<td><strong>TG_OP</strong></td>
+<td>TEXT</td>
+<td>Indica quin event ha provocat el trigger: <strong>INSERT</strong>, <strong>UPDATE</strong> o <strong>DELETE</strong>.</td>
+</tr>
+<tr>
+<td><strong>TG_RELID</strong></td>
+<td>OID</td>
+<td>Conté l'identificador de la taula que ha provocat el trigger (podria ser més d'una).</td>
+</tr>
+<tr>
+<td><strong>TG_RELNAME</strong></td>
+<td>TEXT</td>
+<td>Conté el nom de la taula que ha provocat el trigger.</td>
+</tr>
+<tr>
+<td><strong>TG_NARGS</strong></td>
+<td>INTEGER</td>
+<td>Indica el nombre de paràmetres que se li passen.</td>
+</tr>
+<tr>
+<td><strong>TG_ARGV[ ]</strong></td>
+<td>VECTOR de TEXT</td>
+<td>Vector que conté els paràmetres.</td>
+</tr>
+</tbody>
+</table>
+<p>Aquesta és una relació de variables prou extensiva. En la pràctica nosaltres
+només utilitzarem <strong>NEW</strong> , <strong>OLD</strong> i en tot cas <strong>TG_OP</strong>.</p>
+<p>Una <strong>funció de trigger</strong> ha de tornar o bé <strong>NULL</strong>, o bé un <strong>RECORD</strong>, amb la mateixa
+estructura que la fila de la taula. Depenent del tipus de trigger (BEFORE o AFTER), podeu tornar:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>Tipus de Trigger</th>
+<th>Què ha de tornar la funció de trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BEFORE INSERT/UPDATE</strong></td>
+<td><strong>NEW</strong> (per modificar la fila) o <strong>NULL</strong> (per cancel·lar)</td>
+</tr>
+<tr>
+<td><strong>BEFORE DELETE</strong></td>
+<td><strong>OLD</strong> (si cal registrar el valor abans d'esborrar)</td>
+</tr>
+<tr>
+<td><strong>AFTER</strong> (cualquier tipus)</td>
+<td><strong>NULL</strong> (perquè l'operació ja es va executar)</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Si un trigger de nivell de fila (<strong><em>for each row</em></strong>) torna un valor null, no
+s'efectuaran més operacions (si és un delete, que esborra més d'una fila, si
+la funció torna null, ja no s'intentaran esborrar més files). En canvi, si torna
+una cosa distinta de null, aleshores es procedirà a l'actualització amb aquest
+valor. Així, per curar en salut, podem fer que l'última línia de la funció de
+trigger siga <strong>RETURN NEW;</strong> Açò pot ser molt útil, ja que si és una inserció
+o actualització podríem fins i tot modificar la fila NEW per a que agafe els
+valors que nosaltres volem (per exemple: <strong>NEW.sou := NEW.sou + 500</strong> si
+estiguérem actualitzant el sou d'un empleat).</p>
+<p>Els valors tornats per una funció trigger de nivell de <em><strong>statement</strong></em> són
+sempre ignorats, igual que un AFTER de nivell de fila (ja és massa tard per
+actuar), i per tant millor posar que tornen null.</p>
+<p><strong>Exemple: Modificar valors abans de la inserció (BEFORE INSERT)</strong></p>
+<p>Si algú insereix NULL en nom, el trigger el reemplaça per 'Desconocido'.</p>
+<pre><code>    CREATE OR REPLACE FUNCTION evitar_nulos()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        -- Si el campo nombre es NULL, se asigna un valor por defecto
+        IF NEW.nombre IS NULL THEN
+            NEW.nombre := 'Desconocido';
+        END IF;
+        RETURN NEW; -- Devuelve la fila modificada
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trigger_evitar_nulos
+    BEFORE INSERT ON usuarios
+    FOR EACH ROW
+    EXECUTE FUNCTION evitar_nulos();
+</code></pre>
+<p><strong>Exemple: Cancel·lar una inserció (BEFORE INSERT amb NULL)</strong></p>
+<p>Si el saldo és menor que 0, es cancel·la la inserció</p>
+<pre><code>    CREATE OR REPLACE FUNCTION bloquear_insercion()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        IF NEW.saldo &lt; 0 THEN
+            RAISE EXCEPTION 'No se permiten saldos negativos';
+            RETURN NULL; -- Cancela la inserción
+        END IF;
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trigger_bloqueo
+    BEFORE INSERT ON cuentas
+    FOR EACH ROW
+    EXECUTE FUNCTION bloquear_insercion();
+</code></pre>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Anem a veure uns altres <strong>exemples</strong> en la base de dades <strong>gelo_local</strong>:</p>
+</div>
+<p><strong>Exemple</strong>: impedir que es modifique el nombre d'habitants
+d'una localitat en més de 50000 persones (augmentant o disminuint). Només té
+sentit el control quan es modifique la columna <strong>poblacio</strong>. No té sentit ni
+en inserir ni en esborrar una fila. I ens convé abans d’actualitzar, per poder
+impedir-ho.</p>
+<pre><code>CREATE FUNCTION val_50000() RETURNS TRIGGER AS $cos$
+BEGIN
+    IF abs(NEW.poblacio - OLD.poblacio) &gt; 50000 THEN
+        RAISE EXCEPTION 'Massa diferència. No pot ser!!';
+    END IF;
+    RETURN NEW;
+END; $cos$ 
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER tr_val_50000 BEFORE UPDATE ON POBLACIONS
+    FOR EACH ROW
+    EXECUTE FUNCTION val_50000();
+</code></pre>
+<p>Podríem comprovar el funcionament del trigger actualitzant alguna fila de la
+taula POBLACIONS:</p>
+<pre><code>UPDATE POBLACIONS
+    SET poblacio = 1000
+    WHERE nom='Castelló de la Plana';
+</code></pre>
+<p>Com veieu estem intentant actualitzar la població de Castelló de la Plana a
+1.000 habitants. Com que la població actual és de 173.841, hi haurà una
+diferència de més de 50.000 habitants, i per tant el trigger impedirà
+l'actualització:</p>
+<p><img alt="" src="../T7_8_1.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En DBeaver veurem els triggers en la taula a la qual afecten.</p>
+<p><img alt="" src="../T7_8_2.png" /></p>
+</div>
+<p>Mirem un altre <strong>exemple</strong>: un trigger que actualitza automàticament el nombre
+d'instituts de la taula <strong>PROVINCIES</strong> (teniu la sentència de creació en la
+pregunta 0 d'aquest tema) quan s'insereix o s'esborra un institut. Primer
+s'haurà de mirar la província de l'institut que s'està introduint o esborrant,
+i després s'incrementa o decrementa el nombre d'instituts de la província:</p>
+<pre><code>CREATE OR REPLACE FUNCTION act_inst() RETURNS TRIGGER AS $cos$
+DECLARE aux text;
+BEGIN
+    IF TG_OP='INSERT'
+    THEN
+        SELECT provincia INTO aux FROM POBLACIONS,COMARQUES
+            WHERE POBLACIONS.nom_c=COMARQUES.nom_c AND
+                POBLACIONS.cod_m = NEW.cod_m;
+        UPDATE PROVINCIES
+            SET instituts = instituts + 1
+            WHERE provincia = aux;
+    ELSE
+        SELECT provincia INTO aux FROM POBLACIONS,COMARQUES
+            WHERE POBLACIONS.nom_c=COMARQUES.nom_c AND
+                POBLACIONS.cod_m = OLD.cod_m;
+        UPDATE PROVINCIES
+            SET instituts = instituts - 1
+            WHERE provincia = aux;
+    END IF;
+    RETURN NULL;
+END; $cos$ 
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER tr_act_inst AFTER INSERT OR DELETE ON INSTITUTS
+    FOR EACH ROW
+    EXECUTE FUNCTION act_inst();
+</code></pre>
+<p>Podrem comprovar-ho, per exemple, introduint un nou registre. Abans de
+l'actualització, el contingut de la taula PROVINCIES és:</p>
+<p><img alt="" src="../T7_8_3.png" /></p>
+<p>Inserim ara el nou institut, corresponent a Castelló (el codi del municipi és
+12040)</p>
+<pre><code>INSERT INTO INSTITUTS VALUES
+    ('12004299','IES MARJALERIA','CAMÍ LA PLANA','S/N',12003,12040);
+</code></pre>
+<p>El contingut de la taula PROVINCIES és ara:</p>
+<p><img alt="" src="../T7_8_4.png" /></p>
+<p>Un últim <strong>exemple</strong> per a veure el de <strong>FOR EACH STATEMENT</strong>. Intentarem fer un
+trigger per a que actualitze la població de les províncies. Ara anem a
+plantejar-lo de manera que calcule una altra vegada el total de les
+poblacions. Per tant, segurament és millor calcular-ho quantes menys vegades
+millor; és a dir, si es fan unes quantes actualitzacions de les poblacions,
+doncs calcular al final de totes elles (i no després de cadascuna).</p>
+<pre><code>CREATE OR REPLACE FUNCTION act_pobl() RETURNS TRIGGER AS $cos$
+BEGIN
+    UPDATE PROVINCIES
+    SET habitants = (SELECT SUM(poblacio)
+                        FROM COMARQUES,POBLACIONS
+                        WHERE COMARQUES.nom_c=POBLACIONS.nom_c and
+                            provincia=PROVINCIES.provincia);
+    RETURN NULL;
+END; $cos$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER tr_act_pobl AFTER INSERT OR DELETE OR UPDATE
+    ON POBLACIONS FOR EACH STATEMENT
+    EXECUTE FUNCTION act_pobl();
+</code></pre>
+<p>Per a poder comprovar el resultat del trigger anem a fer una operació
+d'actualització. Per exemple anem a incrementar cada població de la comarca de
+l'Alcalatén en 10.000 habitants (recordeu que ja tenim un trigger que impedeix
+augmentar en més de 50.000).</p>
+<pre><code>UPDATE POBLACIONS
+    SET poblacio = poblacio + 10000
+    WHERE nom_c = 'Alcalatén';
+</code></pre>
+<p>Com que la comarca té 9 pobles, la població de la província de Castelló haurà
+augmentat en 90.000 habitants:</p>
+<p><img alt="" src="../T7_8_5.png" /></p>
+<p>No oblidem executar l'operació de restar 10.000 habitants als pobles de la
+comarca de l'Alcalatén, i llevar l'institut de la Marjaleria, per deixar les
+coses com estaven (encara que només són dades de prova molt desactualitzades).</p>
+<pre><code>UPDATE POBLACIONS
+    SET poblacio = poblacio - 10000
+    WHERE nom_c = 'Alcalatén';
+
+
+DELETE FROM INSTITUTS
+    WHERE codi = '12004299';
+</code></pre>
+<p>Per esborrar un trigger, utilitzarem la instrucció <strong>DROP TRIGGER</strong> :</p>
+<pre><code>DROP TRIGGER nom_trigger ON nom_taula;
+</code></pre>
+<p>La modificació d'un trigger (<strong>ALTER TRIGGER)</strong> només permet canviar el nom
+d'aquest trigger.</p>
+<p>Pot ser molt útil en ocasions desactivar un <em>trigger</em> , de manera que no tinga
+efecte durant una temporada, i tornar a activar-lo més avant. Està clar que
+sempre podríem esborrar-lo i tornar a crear-lo quan faça falta, però serà més
+còmoda la desactivació. Aquesta operació es fa en l'<strong>ALTER TABLE</strong> de la
+taula a la qual implica el <em>trigger</em>.</p>
+<pre><code>ALTER TABLE nom_taula [ENABLE | DISABLE] TRIGGER [nom_trigger | ALL | USER ];
+</code></pre>
+<p>Com es pot comprovar, la sentència permet activar o desactivar un <em>trigger</em> en
+concret, o tots els <em>triggers</em>(caldrà tenir privilegis de superusuari, ja que
+açò inclouria els <em>triggers</em> implicits que fan acomplir les restriccions
+d'integritat, i això només ho podria fer un superusuari), o els <em>triggers</em>
+d'usuari, que són els que no són per implementar les claus externes.</p>
+<h2 id="exercicis"><img alt="✏️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/270f.png" title=":pencil2:" />  Exercicis</h2>
+<p>En la Base de Dades <strong>geo_local</strong> :  </p>
+<p><strong>Ex_12</strong> - Crear un trigger anomenat <strong>TR_ALT_POS</strong> que controle que l'altura
+d'una nova població siga estrictament psitiva. La funció en la qual es basa
+es pot anomenar <strong>ALT_POS</strong>.  </p>
+<p><strong>Ex_13</strong> - Modificar l'anterior per a que ho controle també quan es tracta d'una
+modificació.</p>
+<p><strong>Ex_14</strong> - Crear un trigger anomenat <strong>TR_EXT_0_1000</strong> que controle que l'extensió
+d'un municipi (població) estiga obligatòriament entre 0 i 1000, i ha de ser
+sempre, tant si s'insereix una nova població com si es modifica. Però en
+aquesta ocasió, en compte de traure un error, el que farem serà modificar
+aquest valor: si és major que 1000, li donarem el valor 1000, i si és negatiu
+li posarem 0. Ho aconseguirem modificant NEW.extensio, i com la funció del
+trigger torna sempre NEW, doncs agafarà el nou valor. Anomeneu a la funció
+<strong>EXT_0_1000</strong>.</p>
+<p><strong>Ex_15</strong> - <strong>VOLUNTARI</strong>. En la taula POBLACIONS3 tenim controlat que la latitud
+introduïda siga correcta per mig del tipus lat, però no en la taula
+POBLACIONS, on és de tipus VARCHAR(50) i per tant es podria introduir una
+latitud incorrecta molt fàcilment. Crea un trigger que controle que quan
+s'introdueix o es modifica la <strong>latitud</strong> de <strong>POBLACIONS</strong> siga correcta. Per
+a això</p>
+<ul>
+<li>Els caràcters 1 i 2 han de ser els <strong>graus</strong> , que han d'estar entre 00 i 90</li>
+<li>El caràcter 3 ha de ser <strong>º</strong></li>
+<li>Els caràcters 4 i 5 formen els <strong>minuts</strong> , i han d'estar entre 00 i 59</li>
+<li>El caràcter 6 ha de ser<strong>'</strong></li>
+<li>Els caràcters 7 i 8 formen els <strong>segons</strong> , i han d'estar entre 00 i 59</li>
+<li>El caràcter 9 ha de ser <strong>"</strong></li>
+<li>El caràcter 10 ha de ser <strong>N</strong> o <strong>S</strong></li>
+<li>Si no s'acompleix alguna de les restriccions anteriors, ha d'eixir un error dient que la latitud ha d'estar entre 00º00'00"N i 90º00'00"N , o entre 00º00'00"S i 90º00'00"S  </li>
+</ul>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../7_missatges_i_excepcions/" class="btn btn-neutral float-left" title="7. Missatges"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../exercicis_de_tot_el_tema/" class="btn btn-neutral float-right" title="Exercicis de tot el tema">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../7_missatges_i_excepcions/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../exercicis_de_tot_el_tema/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

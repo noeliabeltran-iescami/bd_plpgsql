@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Documentació amb IA - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Documentaci\u00f3 amb IA";
+        var mkdocs_page_input_path = "documentacio_ia.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Documentació amb IA</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#que-fa">Què fa?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#com-utilitzar-lo">Com utilitzar-lo</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#resultat">Resultat</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">Documentació amb IA</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="documentacio-amb-ia">Documentació amb IA</h1>
+<p>Aquesta pàgina descriu com generar documentació automàtica per a objectes PL/pgSQL utilitzant una capa de IA.</p>
+<h2 id="que-fa">Què fa?</h2>
+<p>El script <code>scripts/generate_plpgsql_documentation.py</code> analitza fitxers SQL amb definicions de funcions, procediments, triggers i altres objectes PL/pgSQL.</p>
+<p>Pot crear un arxiu Markdown amb:</p>
+<ul>
+<li>nom de l'objecte</li>
+<li>tipus d'objecte</li>
+<li>signatura</li>
+<li>retorn</li>
+<li>codi SQL</li>
+<li>documentació generada automàticament amb IA si s'activa l'opció <code>--ai</code></li>
+</ul>
+<h2 id="com-utilitzar-lo">Com utilitzar-lo</h2>
+<ol>
+<li>Instal·la les dependències (opcional si vols activar IA):</li>
+</ol>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div>
+<ol>
+<li>Executa el script per generar documentació a partir d'una carpeta o fitxer SQL:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/generate_plpgsql_documentation.py<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>--output<span class="w"> </span>docs/plpgsql_documentation.md
+</code></pre></div>
+<ol>
+<li>Per generar descripcions amb IA, defineix la variable d'entorn <code>OPENAI_API_KEY</code> i afegeix l'opció <code>--ai</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>tu_api_key
+python<span class="w"> </span>scripts/generate_plpgsql_documentation.py<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>--output<span class="w"> </span>docs/plpgsql_documentation.md<span class="w"> </span>--ai
+</code></pre></div>
+<h2 id="resultat">Resultat</h2>
+<p>El fitxer generat s'emmagatzema per defecte a <code>docs/plpgsql_documentation.md</code>. Pots afegir aquest fitxer al teu lloc MkDocs o utilitzar-lo com a documentació complementària.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Si no tens <code>openai</code> instal·lat o no tens la clau, el script seguirà generant una documentació bàsica basada en l'extracció d'objectes.</li>
+<li>El script està pensat per funcionar amb fitxers SQL i PL/pgSQL en format estàndard.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../exercicis_repas/" class="btn btn-neutral float-left" title="Exercicis de repàs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../exercicis_repas/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

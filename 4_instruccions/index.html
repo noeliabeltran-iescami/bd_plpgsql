@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>4. Instruccions - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "4. Instruccions";
+        var mkdocs_page_input_path = "4_instruccions.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../0_nota_inicial/">0. DDL, DML de la BD per als exercicis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">4. Instruccions</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">4. Instruccions</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="4-instruccions">4. Instruccions</h1>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Les instruccions que van a continuació encara no les podrem practicar, perquè
+han de formar part d'alguna funció. Les podrem practicar a partir de la
+pregunta següent</p>
+</div>
+<ul>
+<li>
+<p><strong>Assignació</strong> : es pot fer de dues maneres</p>
+<ul>
+<li>Directa, amb l’operador <strong>:=</strong> (a := 10; b := a * 0.5; )</li>
+<li>Assignar el resultat d’una consulta (una única fila) a una variable o variables amb <strong>INTO</strong>. INTO pot anar abans o després de les columnes seleccionades:</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<pre><code>SELECT Max(altura) INTO a FROM POBLACIONS;
+
+SELECT INTO a Max(altura) FROM POBLACIONS;
+
+SELECT Max(altura),Min(altura),Avg(altura) INTO a,b,c
+    FROM POBLACIONS;
+</code></pre>
+</blockquote>
+<ul>
+<li><strong>Condicional</strong></li>
+</ul>
+<blockquote>
+<pre><code>    IF condició
+         THEN
+             Sentències;
+         [ELSE
+             sentències;]
+     END IF;
+</code></pre>
+</blockquote>
+<p>També es pot utilitzar <strong>ELSIF</strong> que equival a un ELSE seguit de IF.
+ D'aquesta manera només hi haurà un END IF al final. És la cosa més pareguda
+ al CASE.</p>
+<blockquote>
+<pre><code> IF condició1
+     THEN Sentències1;
+ ELSIF condició2
+     THEN Sentències2;
+ ELSE
+     Sentències3;
+ END IF;
+</code></pre>
+</blockquote>
+<ul>
+<li><strong>Bucles</strong> : s’aconsegueixen per mig de <strong>LOOP ...... END LOOP;</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>Bucle incondicional</strong><pre><code>LOOP
+      Sentències
+END LOOP;
+</code></pre>
+</li>
+</ul>
+</blockquote>
+<p>tal i com està, el bucle és infinit; per eixir <strong>EXIT</strong> o <strong>EXIT WHEN cond</strong></p>
+<blockquote>
+<ul>
+<li><strong>Bucle FOR</strong><pre><code>FOR variable IN [REVERSE] valor_mín .. valor_màx LOOP
+      Sentències
+END LOOP;
+</code></pre>
+</li>
+</ul>
+</blockquote>
+<p>La variable comptador no s'ha de declarar i només té validesa dins del bucle.</p>
+<blockquote>
+<ul>
+<li><strong>Bucle WHILE</strong><pre><code>WHILE condició LOOP
+    Sentències
+END LOOP;
+</code></pre>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p><strong>Sentències SQL</strong> : es poden executar sense problema totes aquelles sentències que no tornen cap resultat (INSERT, UPDATE, DELETE, CREATE TABLE, ...). La sentència SELECT, que sí que torna un valor s'ha d'utilitzar amb la clàusula INTO (com ja hem vist), o dins de PERFORM (com ara veurem).</p>
+</li>
+<li>
+<p><strong>Execució d'altres funcions</strong>. En moltes ocasions ens farà falta executar una altra funció. Si aquesta torna un valor la posarem dins d'una sentència (assignació, en una condició, ...). Però i si no torna cap valor? El mateix podríem dir d'una sentència SELECT (encara que la utilitat d'açò és més dubtosa). Ho farem per mig de PERFORM, que executa una sentència, ignorant el possible valor tornat per aquesta.</p>
+</li>
+</ul>
+<p><strong>Per exemple</strong> (recordeu que <strong>loc_pobl,</strong> la funció creada en la pregunta
+anterior, no torna cap valor, sinó que ho trau per pantalla):</p>
+<pre><code>    PERFORM loc_pobl('Aín');
+
+    PERFORM (SELECT * FROM POBLACIONS);
+</code></pre>
+<ul>
+<li><strong>Execució en forma dinàmica</strong>. Hi haurà ocasions en que la sentència SQL la voldrem construir en temps d'execució, és a dir de forma dinàmica. Això ens ho permet <strong>EXECUTE</strong> , que el que fa es passar la cadena de caràcters que va a continuació al motor SQL.</li>
+</ul>
+<p><strong>Per exemple:</strong></p>
+<pre><code>    EXECUTE 'SELECT ' || $2 || ' FROM ' || $1;
+</code></pre>
+<p>De moment no fa res, perquè el resultat de la sentència es perd, però ja
+veurem més avant la seua aplicació. Un altre exemple, on esborraríem les files
+d'una taula on un camp coincideix amb un valor (tot passat com a paràmetres):</p>
+<pre><code>    EXECUTE 'DELETE FROM ' || $1 || ' WHERE ' || $2 || ' = ' || $3;
+</code></pre>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../3_declaraci_de_variables/" class="btn btn-neutral float-left" title="3. Declaració de variables"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../5_funcions/" class="btn btn-neutral float-right" title="5. Funcions">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../3_declaraci_de_variables/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../5_funcions/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

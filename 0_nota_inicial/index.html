@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>0. DDL, DML de la BD per als exercicis - BD - Bases de Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "0. DDL, DML de la BD per als exercicis";
+        var mkdocs_page_input_path = "0_nota_inicial.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Programació en PostgreSQL</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../objectius_i_coneixements_previs/">Objectius</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">0. DDL, DML de la BD per als exercicis</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../1_introducci/">1. Introducció</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2_plpgsql/">2. PL/pgSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../3_declaraci_de_variables/">3. Declaració de variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../4_instruccions/">4. Instruccions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../5_funcions/">5. Funcions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../6_utilitzaci_de_cursors/">6. Utilització de cursors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../7_missatges_i_excepcions/">7. Missatges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../8_triggers/">8. Triggers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_de_tot_el_tema/">Exercicis de tot el tema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../exercicis_repas/">Exercicis de repàs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../documentacio_ia/">Documentació amb IA</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">BD - Bases de Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Programació en PostgreSQL</li>
+      <li class="breadcrumb-item active">0. DDL, DML de la BD per als exercicis</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="0-ddl-dml-de-la-bd-per-als-exercicis">0. DDL, DML de la BD per als exercicis.</h1>
+<p>En aquest tema també construirem molts objectes, per tant, en lloc de fer ús d’un servidor allotjat al núvol, treballareu amb un servidor <strong>PostgreSQL de manera local</strong>, utilitzant contenidors <strong>Docker</strong>. En tot cas, seguirem utilitzant el client <strong>DBeaver</strong> per connectar-nos i gestionar la base de dades. Tots els exemples i tots els exercicis els farem sobre una Base de Dades anomenada <strong>geo_local</strong> dins de la nostra connexió <strong>postgres_local</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Dins de la connexió postgres_local</p>
+<ul>
+<li><strong>Host</strong>: localhost</li>
+<li><strong>Port</strong>: 5432</li>
+<li><strong>Database</strong>: geo_local</li>
+<li><strong>Username</strong>: admin</li>
+<li><strong>Password</strong>: admin</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Importante</p>
+<p>Us recomane que us creeu una altra connexió per a <strong>geo_local</strong>. </p>
+</div>
+<p>Ací teniu les sentències de creació dels objectes que us faran falta:</p>
+<ul>
+<li>
+<p>Creació de la taula <strong>COMARQUES</strong>:</p>
+<blockquote>
+<pre><code>  CREATE TABLE public.comarques (
+    nom_c varchar(50) NOT NULL,
+    provincia varchar(25) NULL,
+    CONSTRAINT cp_com PRIMARY KEY (nom_c));
+</code></pre>
+</blockquote>
+</li>
+<li>
+<p>Creació de la taula <strong>POBLACIONS</strong>:    </p>
+<blockquote>
+<pre><code>CREATE TABLE public.poblacions (
+  cod_m numeric(5) NOT NULL,
+  nom varchar(50) NOT NULL,
+  poblacio numeric(6) NULL,
+  extensio numeric(6, 2) NULL,
+  altura numeric(4) NULL,
+  longitud varchar(50) NULL,
+  latitud varchar(50) NULL,
+  llengua bpchar(1) NULL,
+  nom_c varchar(50) NULL,
+  CONSTRAINT cp_pobl PRIMARY KEY (cod_m),
+  CONSTRAINT ce_pob_com FOREIGN KEY (nom_c) REFERENCES public.comarques(nom_c) ON UPDATE CASCADE);
+</code></pre>
+</blockquote>
+</li>
+<li>
+<p>Creació de la taula <strong>INSTITUTS</strong>:    </p>
+<blockquote>
+<pre><code>  CREATE TABLE public.instituts (
+    codi varchar(8) NOT NULL,
+    nom varchar(60) NULL,
+    adreca varchar(100) NULL,
+    numero varchar(5) NULL,
+    codpostal numeric(5) NULL,
+    cod_m numeric(5) NULL,
+    CONSTRAINT cp_ins PRIMARY KEY (codi),
+    CONSTRAINT ce_ins_pob FOREIGN KEY (cod_m) REFERENCES public.poblacions(cod_m));
+</code></pre>
+</blockquote>
+</li>
+<li>
+<p>Inserció de dades en la taula <strong>COMARQUES</strong>:  </p>
+<blockquote>
+<p><a href="../dades%20comarques.sql">COMARQUES.sql</a>    </p>
+</blockquote>
+</li>
+<li>
+<p>Inserció de dades en la taula <strong>POBLACIONS</strong>:  </p>
+<blockquote>
+<p><a href="../dades%20poblacions.sql">POBLACIONS.sql</a> </p>
+</blockquote>
+</li>
+<li>
+<p>Inserció de dades en la taula <strong>INSTITUTS</strong>:  </p>
+<blockquote>
+<p><a href="../dades%20instituts.sql">INSTITUTS.sql</a> </p>
+</blockquote>
+</li>
+<li>
+<p>Creació de la taula <strong>PROVINCIES</strong>:</p>
+</li>
+</ul>
+<blockquote>
+<pre><code>  CREATE TABLE PROVINCIES AS  
+  SELECT provincia, SUM(poblacio) AS habitants, SUM(Q) AS instituts  
+    FROM (COMARQUES INNER JOIN POBLACIONS ON COMARQUES.nom_c=POBLACIONS.nom_c)  
+      LEFT JOIN (SELECT cod_m, count(*) AS Q  
+                  FROM INSTITUTS  
+                  GROUP BY cod_m) I ON POBLACIONS.cod_m=I.cod_m  
+    GROUP BY provincia;
+</code></pre>
+</blockquote>
+<ul>
+<li>Creació dels dominis <strong>hemi_lat</strong> , <strong>graus_lat</strong> , i <strong>min_seg</strong> :</li>
+</ul>
+<blockquote>
+<pre><code>  CREATE DOMAIN hemi_lat AS char(1)  
+    CHECK (VALUE IN ('N','S'));
+
+  CREATE DOMAIN graus_lat AS numeric(2)  
+    CHECK (VALUE BETWEEN 0 AND 90);
+
+  CREATE DOMAIN min_seg AS numeric(2)  
+    CHECK (VALUE BETWEEN 0 AND 59);
+</code></pre>
+</blockquote>
+<ul>
+<li>Creació del tipus <strong>lat</strong> :</li>
+</ul>
+<blockquote>
+<pre><code>  CREATE TYPE lat AS (  
+    h hemi_lat,  
+    g graus_lat,  
+    m min_seg,  
+    s min_seg );
+</code></pre>
+</blockquote>
+<ul>
+<li>Creació de la taula <strong>POBLACIONS3</strong> :</li>
+</ul>
+<blockquote>
+<pre><code>  CREATE TABLE POBLACIONS3 (  
+    nom VARCHAR(50) CONSTRAINT cp_pob3 PRIMARY KEY,  
+    latitud lat,  
+    comarca varchar(50) );
+</code></pre>
+</blockquote>
+<p>Llicenciat sota la  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Llicència Creative Commons Reconeixement NoComercial
+CompartirIgual 3.0</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../objectius_i_coneixements_previs/" class="btn btn-neutral float-left" title="Objectius"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../1_introducci/" class="btn btn-neutral float-right" title="1. Introducció">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../objectius_i_coneixements_previs/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../1_introducci/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
